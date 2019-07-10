@@ -7,6 +7,20 @@ import StarwarsLogo from './components/StarwarsLogo';
 import Loader from './components/Loader';
 import AppContext from './context';
 
+const sort = (a, b, key, order, type) => {
+  let comparison = 0;
+
+  const A = type === 'number' ? Number(a[key]) : a[key].toUpperCase();
+  const B = type === 'number' ? Number(b[key]) : b[key].toUpperCase();
+
+  if (A < B) {
+    comparison = 1;
+  } else if (A > B) {
+    comparison = -1;
+  }
+  return order === 'asc' ? comparison : comparison * -1;
+};
+
 class App extends React.Component {
   state = {
     loading: false,
@@ -14,6 +28,11 @@ class App extends React.Component {
     characterList: [],
     selectedMovie: null,
     loadingText: null,
+    characterListOrder: {
+      name: 'dsc',
+      gender: 'dsc',
+      height: 'dsc',
+    },
   };
 
   apiUrl = 'https://swapi.co/api';
@@ -55,10 +74,22 @@ class App extends React.Component {
 
   onSelectedMovieChange = event => {
     const { movieList } = this.state;
-    const movie = movieList.find(movie => movie.episode_id == event.target.value);
+    const movie = movieList.find(movie => String(movie.episode_id) === event.target.value);
     if (movie && movie.characters) {
       this.setState({ selectedMovie: { ...movie } });
       this.fetchCharacters(movie.characters);
+    }
+  };
+
+  sortCharactersBy = (by, type = 'string') => {
+    let { characterListOrder, characterList } = this.state;
+    const { [by]: currentState } = characterListOrder;
+    if (currentState === 'asc') {
+      characterList = characterList.sort((a, b) => sort(a, b, [by], 'asc', type));
+      this.setState({ characterList, characterListOrder: { ...characterListOrder, [by]: 'desc' } });
+    } else {
+      characterList = characterList.sort((a, b) => sort(a, b, [by], 'desc', type));
+      this.setState({ characterList, characterListOrder: { ...characterListOrder, [by]: 'asc' } });
     }
   };
 
@@ -74,7 +105,7 @@ class App extends React.Component {
         <React.Fragment>
           <p className="movie-title">{selectedMovie.title}</p>
           <OpeningCrawl content={selectedMovie.opening_crawl} />
-          <CharacterList />
+          <CharacterList sortCharactersBy={this.sortCharactersBy} />
         </React.Fragment>
       );
     }

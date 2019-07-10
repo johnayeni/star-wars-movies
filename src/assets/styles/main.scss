@@ -62,15 +62,18 @@ body {
   font-family: 'Montserrat', sans-serif;
   width: 100%;
   text-align: left;
+  thead {
+    td {
+      cursor: pointer;
+    }
+  }
   tbody {
     color: #ffffff;
   }
   tfoot {
     color: $yellow;
-    tr {
-      td {
-        float: right;
-      }
+    td {
+      float: right;
     }
   }
 }

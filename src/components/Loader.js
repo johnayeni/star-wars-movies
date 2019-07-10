@@ -9,7 +9,7 @@ class Loader extends React.PureComponent {
     const { loadingText } = this.context;
     return (
       <React.Fragment>
-        <ReactLoader type="Rings" color="#ffe545" height="80" width="80" />
+        <ReactLoader type="RevolvingDot" color="#ffe545" height="80" width="80" />
         <p>{loadingText || ''}</p>
       </React.Fragment>
     );

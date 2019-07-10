@@ -10,6 +10,7 @@ class CharacterList extends React.PureComponent {
   static contextType = AppContext;
   render() {
     const { characterList } = this.context;
+    const { sortCharactersBy } = this.props;
     return (
       <div id="characters">
         <p>Characters</p>
@@ -17,9 +18,9 @@ class CharacterList extends React.PureComponent {
           <table className="character-list-table">
             <thead>
               <tr>
-                <td>Name</td>
-                <td>Gender</td>
-                <td>Height (cm)</td>
+                <td onClick={() => sortCharactersBy('name')}>Name</td>
+                <td onClick={() => sortCharactersBy('gender')}>Gender</td>
+                <td onClick={() => sortCharactersBy('height', 'number')}>Height (cm)</td>
               </tr>
             </thead>
             <tbody>
