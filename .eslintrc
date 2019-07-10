@@ -1,0 +1,20 @@
+{
+  "extends": ["airbnb"],
+  "rules": {
+    "react/jsx-filename-extension": false,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "dependencies": false
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "moduleDirectory": ["node_modules", "src/"]
+      }
+    }
+  }
+}
