@@ -1,0 +1,101 @@
+$black: #000000;
+$yellow: #ffe545;
+$gray: #f4f4f4;
+
+@font-face {
+  font-family: 'Soloist';
+  src: url('../fonts/Soloist.ttf');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../fonts/Montserrat-Bold.ttf');
+}
+
+body {
+  font-family: 'Soloist', sans-serif;
+  background-color: $black;
+  color: $yellow;
+}
+
+.movie-title {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 720px;
+  margin: auto;
+  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  * {
+    margin: auto;
+    margin-bottom: 20px;
+  }
+}
+
+.select-input {
+  background-color: $black;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 6px;
+  color: $yellow;
+  border: 2px solid $yellow;
+  width: 100%;
+  font-size: 1rem;
+  font-family: 'Soloist', sans-serif;
+  &:disabled {
+    border: 1px solid $gray;
+    color: $gray;
+  }
+}
+
+#characters {
+  width: 100%;
+  text-align: center;
+}
+
+.character-list-table {
+  font-family: 'Montserrat', sans-serif;
+  width: 100%;
+  text-align: left;
+  tbody {
+    color: #ffffff;
+  }
+  tfoot {
+    color: $yellow;
+    tr {
+      td {
+        float: right;
+      }
+    }
+  }
+}
+
+.table-footer {
+}
+
+.marquee {
+  color: #ffffff;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  animation: marquee 100s ease-out infinite;
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    text-indent: 95%;
+  }
+  100% {
+    text-indent: -300em;
+  }
+}
