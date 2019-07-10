@@ -15,12 +15,8 @@ $gray: #f4f4f4;
 body {
   font-family: 'Soloist', sans-serif;
   background-color: $black;
+  background-image: url('../img/star-backgound.gif');
   color: $yellow;
-}
-
-.movie-title {
-  font-size: 2rem;
-  text-align: center;
 }
 
 .container {
@@ -37,6 +33,11 @@ body {
   }
 }
 
+.movie-title {
+  font-size: 2rem;
+  text-align: center;
+}
+
 .select-input {
   background-color: $black;
   box-sizing: border-box;
@@ -51,6 +52,52 @@ body {
     border: 1px solid $gray;
     color: $gray;
   }
+  &:focus {
+    box-shadow: none;
+  }
+  option {
+    text-align: center;
+  }
+}
+
+.switch-field {
+  input {
+    position: absolute !important;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    width: 1px;
+    border: 0;
+    overflow: hidden;
+    &:checked + label {
+      background-color: $yellow;
+      color: $black;
+      box-shadow: none;
+    }
+  }
+
+  label {
+    display: inline-block;
+    background-color: transparent;
+    color: $yellow;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    text-shadow: none;
+    padding: 6px 14px;
+    border: 1px solid $yellow;
+    transition: all 0.1s ease-in-out;
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:first-of-type {
+      border-radius: 4px 0 0 4px;
+    }
+
+    &:last-of-type {
+      border-radius: 0 4px 4px 0;
+    }
+  }
 }
 
 #characters {
@@ -60,8 +107,11 @@ body {
 
 .character-list-table {
   font-family: 'Montserrat', sans-serif;
+  border-collapse: collapse;
   width: 100%;
+  font-size: 0.7rem;
   text-align: left;
+  white-space: nowrap;
   thead {
     td {
       cursor: pointer;
@@ -72,10 +122,10 @@ body {
   }
   tfoot {
     color: $yellow;
+    border-top: 2px solid $yellow;
+    border-bottom: 2px solid $yellow;
+    padding-top: 10px;
   }
-}
-
-.table-footer {
 }
 
 .marquee {
@@ -86,9 +136,20 @@ body {
   white-space: nowrap;
   box-sizing: border-box;
   animation: marquee 100s ease-out infinite;
+  &.paused {
+    animation-play-state: paused;
+  }
   &:hover {
     animation-play-state: paused;
   }
+}
+
+.text--white {
+  color: #ffffff;
+}
+
+.text-yellow {
+  color: $yellow;
 }
 
 @keyframes marquee {

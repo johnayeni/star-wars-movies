@@ -6,13 +6,13 @@ class DropdownInput extends React.PureComponent {
   static contextType = AppContext;
 
   render() {
-    const { movieList } = this.context;
+    const { movieList, loading } = this.context;
     const { onSelectedMovieChange } = this.props;
     return (
       <select
         className="select-input"
         onChange={onSelectedMovieChange}
-        disabled={!verifyArray(movieList)}
+        disabled={!verifyArray(movieList) || loading}
       >
         {verifyArray(movieList) ? (
           <React.Fragment>
