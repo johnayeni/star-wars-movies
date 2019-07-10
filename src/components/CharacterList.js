@@ -1,10 +1,6 @@
 import React from 'react';
 import AppContext from 'context';
-
-const determineGender = value => {
-  const genders = { hermaphrodite: 'H', male: 'M', female: 'F' };
-  return genders[value.toLowerCase()] || 'N/A';
-};
+import { determineGender, verifyArray } from 'utils';
 
 class CharacterList extends React.PureComponent {
   static contextType = AppContext;
@@ -14,7 +10,7 @@ class CharacterList extends React.PureComponent {
     return (
       <div id="characters">
         <p>Characters</p>
-        {Array.isArray(characterList) && characterList.length > 0 ? (
+        {verifyArray(characterList) ? (
           <table className="character-list-table">
             <thead>
               <tr>

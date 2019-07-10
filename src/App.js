@@ -6,20 +6,8 @@ import CharacterList from './components/CharacterList';
 import StarwarsLogo from './components/StarwarsLogo';
 import Loader from './components/Loader';
 import AppContext from './context';
-
-const sort = (a, b, key, order, type) => {
-  let comparison = 0;
-
-  const A = type === 'number' ? Number(a[key]) : a[key].toUpperCase();
-  const B = type === 'number' ? Number(b[key]) : b[key].toUpperCase();
-
-  if (A < B) {
-    comparison = 1;
-  } else if (A > B) {
-    comparison = -1;
-  }
-  return order === 'asc' ? comparison : comparison * -1;
-};
+import { ASCENDING_ORDER, DESCENDING_ORDER } from './constants';
+import { sort } from './utils';
 
 class App extends React.Component {
   state = {
@@ -29,9 +17,9 @@ class App extends React.Component {
     selectedMovie: null,
     loadingText: null,
     characterListOrder: {
-      name: 'dsc',
-      gender: 'dsc',
-      height: 'dsc',
+      name: DESCENDING_ORDER,
+      gender: DESCENDING_ORDER,
+      height: DESCENDING_ORDER,
     },
   };
 
@@ -84,12 +72,18 @@ class App extends React.Component {
   sortCharactersBy = (by, type = 'string') => {
     let { characterListOrder, characterList } = this.state;
     const { [by]: currentState } = characterListOrder;
-    if (currentState === 'asc') {
-      characterList = characterList.sort((a, b) => sort(a, b, [by], 'asc', type));
-      this.setState({ characterList, characterListOrder: { ...characterListOrder, [by]: 'desc' } });
+    if (currentState === ASCENDING_ORDER) {
+      characterList = characterList.sort((a, b) => sort(a, b, [by], ASCENDING_ORDER, type));
+      this.setState({
+        characterList,
+        characterListOrder: { ...characterListOrder, [by]: DESCENDING_ORDER },
+      });
     } else {
-      characterList = characterList.sort((a, b) => sort(a, b, [by], 'desc', type));
-      this.setState({ characterList, characterListOrder: { ...characterListOrder, [by]: 'asc' } });
+      characterList = characterList.sort((a, b) => sort(a, b, [by], DESCENDING_ORDER, type));
+      this.setState({
+        characterList,
+        characterListOrder: { ...characterListOrder, [by]: ASCENDING_ORDER },
+      });
     }
   };
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import AppContext from 'context';
+import { verifyArray } from 'utils';
 
 class DropdownInput extends React.PureComponent {
   static contextType = AppContext;
@@ -11,9 +12,9 @@ class DropdownInput extends React.PureComponent {
       <select
         className="select-input"
         onChange={onSelectedMovieChange}
-        disabled={!(Array.isArray(movieList) && movieList.length > 0)}
+        disabled={!verifyArray(movieList)}
       >
-        {Array.isArray(movieList) && movieList.length > 0 ? (
+        {verifyArray(movieList) ? (
           <React.Fragment>
             <option>Pick a movie</option>
             {movieList.map(movie => (
