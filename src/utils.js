@@ -20,3 +20,12 @@ export const determineGender = (value) => {
 };
 
 export const verifyArray = arr => Array.isArray(arr) && arr.length > 0;
+
+export const getTotalHeight = (acc, cur) => Number(acc.height) + Number(cur.height);
+
+export const convertCentimetresToFeetPerInches = (cm) => {
+  const realFeet = (cm * 0.3937) / 12;
+  const feet = Math.floor(realFeet);
+  const inches = Math.round((realFeet - feet) * 12);
+  return { feet, inches };
+};

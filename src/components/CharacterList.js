@@ -1,6 +1,11 @@
 import React from 'react';
 import AppContext from 'context';
-import { determineGender, verifyArray } from 'utils';
+import {
+  determineGender,
+  verifyArray,
+  getTotalHeight,
+  convertCentimetresToFeetPerInches,
+} from 'utils';
 
 class CharacterList extends React.PureComponent {
   static contextType = AppContext;
@@ -28,11 +33,20 @@ class CharacterList extends React.PureComponent {
                 </tr>
               ))}
             </tbody>
-            {/* <tfoot>
-                <tr>
-                  <td>170 cm (5ft/6.93in)</td>
-                </tr>
-              </tfoot> */}
+            <tfoot>
+              <tr>
+                <td>No. of characters</td>
+                <td>{characterList.length}</td>
+              </tr>
+              <tr>
+                <td>Total height sum</td>
+                <td>{`${characterList.reduce(getTotalHeight)} cm (${
+                  convertCentimetresToFeetPerInches(characterList.reduce(getTotalHeight)).feet
+                }ft/${
+                  convertCentimetresToFeetPerInches(characterList.reduce(getTotalHeight)).inches
+                }in)`}</td>
+              </tr>
+            </tfoot>
           </table>
         ) : (
           <p style={{ color: '#ffffff' }}>No characters available</p>
