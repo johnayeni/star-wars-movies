@@ -53,10 +53,7 @@ body {
     color: $gray;
   }
   &:focus {
-    box-shadow: none;
-  }
-  option {
-    text-align: center;
+    outline: none;
   }
 }
 

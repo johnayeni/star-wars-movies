@@ -6,11 +6,11 @@ const GenderFilter = () => (
     {({ onfilterChange, filter }) => (
       <div className="switch-field">
         <input type="radio" name="gender" value="all" id="all" checked={filter === 'all'} onChange={onfilterChange} />
-        <label>All</label>
+        <label htmlFor="all">All</label>
         <input type="radio" name="gender" value="male" id="male" checked={filter === 'male'} onChange={onfilterChange} />
-        <label>Male</label>
+        <label htmlFor="male">Male</label>
         <input type="radio" name="gender" value="female" id="female" checked={filter === 'female'} onChange={onfilterChange} />
-        <label>Female</label>
+        <label htmlFor="female">Female</label>
         <input
           type="radio"
           name="gender"
@@ -19,7 +19,7 @@ const GenderFilter = () => (
           checked={filter === 'hermaphrodite'}
           onChange={onfilterChange}
         />
-        <label>Hermaphrodite</label>
+        <label htmlFor="hermaphrodite">Hermaphrodite</label>
       </div>
     )}
   </AppContext.Consumer>
