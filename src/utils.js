@@ -1,14 +1,16 @@
-import { ASCENDING_ORDER } from './constants';
+import {
+  ASCENDING_ORDER, GENDERS, NUMBER, DATE,
+} from './constants';
 
 export const sort = (a, b, key, order, type) => {
   let comparison = 0;
 
   let A;
   let B;
-  if (type === 'number') {
-    A = Number(a[key]);
-    B = Number(b[key]);
-  } else if (type === 'date') {
+  if (type === NUMBER) {
+    A = Number(a[key]) || 0;
+    B = Number(b[key]) || 0;
+  } else if (type === DATE) {
     A = new Date(a[key]);
     B = new Date(b[key]);
   } else {
@@ -24,10 +26,7 @@ export const sort = (a, b, key, order, type) => {
   return order === ASCENDING_ORDER ? comparison : comparison * -1;
 };
 
-export const determineGender = (value) => {
-  const genders = { hermaphrodite: 'H', male: 'M', female: 'F' };
-  return genders[value.toLowerCase()] || 'N/A';
-};
+export const determineGender = value => GENDERS[value.toLowerCase()] || 'N/A';
 
 export const verifyArray = arr => Array.isArray(arr) && arr.length > 0;
 
@@ -40,4 +39,8 @@ export const convertCentimetresToFeetPerInches = (cm) => {
   const feet = Math.floor(realFeet);
   const inches = Math.round((realFeet - feet) * 12);
   return { feet, inches };
+};
+
+export const handleError = (message) => {
+  throw new Error(message);
 };

@@ -2,13 +2,9 @@ import React from 'react';
 import AppContext from 'context';
 import { verifyArray } from 'utils';
 
-class DropdownInput extends React.PureComponent {
-  static contextType = AppContext;
-
-  render() {
-    const { movieList, loading } = this.context;
-    const { onSelectedMovieChange } = this.props;
-    return (
+const DropdownInput = () => (
+  <AppContext.Consumer>
+    {({ movieList, loading, onSelectedMovieChange }) => (
       <select
         className="select-input"
         onChange={onSelectedMovieChange}
@@ -27,7 +23,7 @@ class DropdownInput extends React.PureComponent {
           <option>No movies available</option>
         )}
       </select>
-    );
-  }
-}
+    )}
+  </AppContext.Consumer>
+);
 export default DropdownInput;

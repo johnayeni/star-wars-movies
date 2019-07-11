@@ -3,6 +3,9 @@
   "rules": {
     "react/jsx-filename-extension": false,
     "react/prop-types": false,
+    "jsx-a11y/label-has-for": false,
+    "jsx-a11y/label-has-associated-control": false,
+    "no-restricted-globals": 0,
     "import/no-extraneous-dependencies": [
       "error",
       {
