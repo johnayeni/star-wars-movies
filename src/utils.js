@@ -2,6 +2,16 @@ import {
   ASCENDING_ORDER, GENDERS, NUMBER, DATE,
 } from './constants';
 
+/**
+ * This function is a sort function for  objects in an array.
+ * It compares two values and determines if thier order should be swapped
+ *  depending and the order of the sorting
+ * @param {*} a
+ * @param {*} b
+ * @param {String} key
+ * @param {String} order
+ * @param {String} type
+ */
 export const sort = (a, b, key, order, type) => {
   let comparison = 0;
 
@@ -26,14 +36,34 @@ export const sort = (a, b, key, order, type) => {
   return order === ASCENDING_ORDER ? comparison : comparison * -1;
 };
 
+/**
+ * This function returns a short value for a string with a gender value
+ * e.g returns M for male
+ * @param {String} value
+ */
 export const determineGender = value => GENDERS[value.toLowerCase()] || 'N/A';
 
+/**
+ * Checks if a paramenter is an array and if the length is graeter than 0
+ * @param {*} arr
+ */
 export const verifyArray = arr => Array.isArray(arr) && arr.length > 0;
 
+/**
+ * This function is for a reducer function to sum the height value of an
+ * array of objects
+ * @param {Number} total
+ * @param {Object} character
+ */
 export const getTotalHeight = (total, character) => {
   const height = character.height === 'unknown' ? 0 : Number(character.height);
   return total + height;
 };
+
+/**
+ * Converts a number in centimetre value to feet/inches
+ * @param {Number} cm
+ */
 export const convertCentimetresToFeetPerInches = (cm) => {
   const realFeet = (cm * 0.3937) / 12;
   const feet = Math.floor(realFeet);
@@ -41,6 +71,10 @@ export const convertCentimetresToFeetPerInches = (cm) => {
   return { feet, inches };
 };
 
+/**
+ * This function is for handling errors
+ * @param {String} message
+ */
 export const handleError = (message) => {
   throw new Error(message);
 };
