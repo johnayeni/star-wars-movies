@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import {
   ASCENDING_ORDER, GENDERS, NUMBER, DATE,
 } from './constants';
@@ -76,5 +77,8 @@ export const convertCentimetresToFeetPerInches = (cm) => {
  * @param {String} message
  */
 export const handleError = (message) => {
+  toast.error(message || 'An error has occured', {
+    position: toast.POSITION.BOTTOM_CENTER,
+  });
   throw new Error(message);
 };
