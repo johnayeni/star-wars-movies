@@ -15,7 +15,6 @@ import {
  */
 export const sort = (a, b, key, order, type) => {
   let comparison = 0;
-
   let A;
   let B;
   if (type === NUMBER) {

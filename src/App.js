@@ -44,15 +44,16 @@ class App extends React.Component {
     }
   };
 
-  fetchCharacters = async characters => {
-    let characterList = [];
+  fetchCharacters = async charactersUrls => {
     this.setState({ loading: true });
     try {
-      for (let character of characters) {
-        const response = await axios.get(character);
-        characterList.push(response.data);
-        this.setState({ characterList });
-      }
+      const characterList = await Promise.all(
+        charactersUrls.map(async url => {
+          const response = await axios.get(url);
+          return response.data;
+        }),
+      );
+      this.setState({ characterList });
     } catch (error) {
       handleError(error.message);
     } finally {
