@@ -4,11 +4,14 @@ import AppContext from 'context';
 
 const OpeningCrawl = () => (
   <AppContext.Consumer>
-    {({ selectedMovie: { opening_crawl } }) => (
-      <div className="opening-crawl-marquee">
-        <p>{opening_crawl}</p>
-      </div>
-    )}
+    {({ selectedMovie, movieList }) => {
+      const { opening_crawl } = movieList[selectedMovie];
+      return (
+        <div className="opening-crawl-marquee">
+          <p>{opening_crawl}</p>
+        </div>
+      );
+    }}
   </AppContext.Consumer>
 );
 
