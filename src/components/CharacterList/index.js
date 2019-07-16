@@ -8,23 +8,23 @@ import TableFooter from './components/TableFooter';
 
 const CharacterList = () => (
   <AppContext.Consumer>
-    {({ characterList, filter, sortCharactersBy }) => {
-      let filteredCharacterList = [...characterList];
+    {({ characters: { list }, filter, sortCharacters }) => {
+      let filteredCharacterList = [...list];
       if (filter !== 'all') {
-        filteredCharacterList = characterList.filter(character => character.gender === filter);
+        filteredCharacterList = list.filter(character => character.gender === filter);
       }
       const charactersTotalHeight = filteredCharacterList.reduce(getTotalHeight, 0);
       const heightInFeetPerInches = convertCentimetresToFeetPerInches(charactersTotalHeight);
       const noOfCharacters = filteredCharacterList.length;
-      
+
       return (
         <div id="characters">
           <p>Characters</p>
+          <GenderFilter />
           {verifyArray(filteredCharacterList) ? (
             <React.Fragment>
-              <GenderFilter />
               <table className="character-list-table">
-                <TableHeader sortCharactersBy={sortCharactersBy} />
+                <TableHeader sortCharacters={sortCharacters} />
                 <TableBody filteredCharacterList={filteredCharacterList} />
                 <TableFooter
                   noOfCharacters={noOfCharacters}

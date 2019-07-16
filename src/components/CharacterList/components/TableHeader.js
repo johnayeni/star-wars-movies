@@ -3,12 +3,12 @@
 import React from 'react';
 import { NUMBER } from '../../../constants';
 
-const TableHeader = ({ sortCharactersBy }) => (
+const TableHeader = ({ sortCharacters }) => (
   <thead>
     <tr>
-      <td onClick={() => sortCharactersBy('name')}>Name</td>
-      <td onClick={() => sortCharactersBy('gender')}>Gender</td>
-      <td onClick={() => sortCharactersBy('height', NUMBER)}>Height (cm)</td>
+      <td onClick={() => sortCharacters('name')}>Name</td>
+      <td onClick={() => sortCharacters('gender')}>Gender</td>
+      <td onClick={() => sortCharacters('height', NUMBER)}>Height (cm)</td>
     </tr>
   </thead>
 );

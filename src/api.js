@@ -1,7 +1,10 @@
 import axios from 'axios';
-import { sort, getCharacterIdFromURL, handleError } from 'utils';
+import axiosRetry from 'axios-retry';
+import { sortHelper, getCharacterIdFromURL, handleError } from 'utils';
 import LocalDB from './localDB';
-import { API_URL, ASCENDING_ORDER, DATE } from './constants';
+import { API_URL, DESCENDING_ORDER, DATE } from './constants';
+
+axiosRetry(axios, { retries: 3 });
 
 class API {
   static fetchData(url) {
@@ -13,7 +16,7 @@ class API {
       const {
         data: { results },
       } = await this.fetchData(`${API_URL}/films`);
-      return results.sort((a, b) => sort(a, b, 'release_date', ASCENDING_ORDER, DATE));
+      return results.sort((a, b) => sortHelper(a, b, 'release_date', DESCENDING_ORDER, DATE));
     } catch (error) {
       handleError(error.message);
       return [];

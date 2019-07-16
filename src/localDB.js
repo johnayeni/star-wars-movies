@@ -2,6 +2,12 @@ import * as idb from 'idb';
 
 class LocalDB {
   static openDatabase() {
+    if (!window.indexedDB) {
+      console.log(
+        "Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.",
+      );
+      return null;
+    }
     return idb.openDB('star-wars-movies', 1, {
       upgrade(db) {
         db.createObjectStore('characters', { keyPath: 'id' });
@@ -28,7 +34,7 @@ class LocalDB {
 
   static async getCharacter(id) {
     const db = await LocalDB.openDatabase();
-    if (!db) return;
+    if (!db) return null;
     const tx = db.transaction('characters');
     const store = tx.objectStore('characters');
     return store.get(id);

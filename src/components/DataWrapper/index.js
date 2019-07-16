@@ -1,22 +1,24 @@
 import React from 'react';
 import AppContext from 'context';
-import { ASCENDING_ORDER, DESCENDING_ORDER, STRING } from '../../constants';
-import { sort } from 'utils';
+import { DESCENDING_ORDER, STRING } from '../../constants';
+import { sortCharacters } from 'utils';
 import API from 'api';
 
 class DataWrapper extends React.Component {
   state = {
     loading: false,
     movieList: [],
-    characterList: [],
+    characters: {
+      list: [],
+      order: {
+        name: DESCENDING_ORDER,
+        gender: DESCENDING_ORDER,
+        height: DESCENDING_ORDER,
+      },
+    },
     selectedMovieId: null,
     loadingText: null,
     filter: 'all',
-    characterListOrder: {
-      name: DESCENDING_ORDER,
-      gender: DESCENDING_ORDER,
-      height: DESCENDING_ORDER,
-    },
   };
 
   componentDidMount() {
@@ -30,9 +32,18 @@ class DataWrapper extends React.Component {
   };
 
   fetchCharacters = async charactersUrls => {
-    this.setState({ characterList: [], loading: true, loadingText: 'The force is searching ...' });
+    const { characters } = this.state;
+    this.setState({
+      characters: { ...characters, list: [] },
+      loading: true,
+      loadingText: 'The force is searching ...',
+    });
     const characterList = await API.fetchCharacters(charactersUrls);
-    this.setState({ characterList, loading: false, loadingText: null });
+    this.setState({
+      characters: { ...characters, list: characterList },
+      loading: false,
+      loadingText: null,
+    });
   };
 
   onselectedMovieIdChange = event => {
@@ -48,22 +59,10 @@ class DataWrapper extends React.Component {
     this.setState({ filter: event.target.value });
   };
 
-  sortCharactersBy = (by, type = STRING) => {
-    let { characterListOrder, characterList } = this.state;
-    const { [by]: currentState } = characterListOrder;
-    if (currentState === ASCENDING_ORDER) {
-      characterList = characterList.sort((a, b) => sort(a, b, by, ASCENDING_ORDER, type));
-      this.setState({
-        characterList,
-        characterListOrder: { ...characterListOrder, [by]: DESCENDING_ORDER },
-      });
-    } else {
-      characterList = characterList.sort((a, b) => sort(a, b, by, DESCENDING_ORDER, type));
-      this.setState({
-        characterList,
-        characterListOrder: { ...characterListOrder, [by]: ASCENDING_ORDER },
-      });
-    }
+  sortCharacters = (key, type = STRING) => {
+    const { characters } = this.state;
+    const sortedCharcters = sortCharacters(characters, key, type);
+    this.setState({ characters: sortedCharcters });
   };
 
   render() {
@@ -72,7 +71,7 @@ class DataWrapper extends React.Component {
       ...this.state,
       onfilterChange: this.onfilterChange,
       onselectedMovieIdChange: this.onselectedMovieIdChange,
-      sortCharactersBy: this.sortCharactersBy,
+      sortCharacters: this.sortCharacters,
     };
     return <AppContext.Provider value={contextData}>{children}</AppContext.Provider>;
   }

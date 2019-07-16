@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import {
-  ASCENDING_ORDER, GENDERS, NUMBER, DATE,
+  ASCENDING_ORDER, DESCENDING_ORDER, GENDERS, NUMBER, DATE,
 } from './constants';
 
 /**
@@ -13,7 +13,7 @@ import {
  * @param {String} order
  * @param {String} type
  */
-export const sort = (a, b, key, order, type) => {
+export const sortHelper = (a, b, key, order, type) => {
   let comparison = 0;
   let A;
   let B;
@@ -33,7 +33,14 @@ export const sort = (a, b, key, order, type) => {
   } else if (A > B) {
     comparison = -1;
   }
-  return order === ASCENDING_ORDER ? comparison : comparison * -1;
+  return order === ASCENDING_ORDER ? comparison * -1 : comparison;
+};
+
+export const sortCharacters = (characters, key, type) => {
+  const { list, order } = characters;
+  const reverseOrder = order[key] === ASCENDING_ORDER ? DESCENDING_ORDER : ASCENDING_ORDER;
+  const sortedList = list.sort((a, b) => sortHelper(a, b, key, reverseOrder, type));
+  return { list: sortedList, order: { ...order, [key]: reverseOrder }}
 };
 
 /**
@@ -81,8 +88,6 @@ export const getCharacterIdFromURL = url => Number.parseInt(url.replace(/^\D+/g,
  * @param {String} message
  */
 export const handleError = (message) => {
-  toast.error(message || 'An error has occured', {
-    position: toast.POSITION.BOTTOM_CENTER,
-  });
+  toast.error(message || 'An error has occured');
   console.log(message);
 };
