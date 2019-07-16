@@ -4,7 +4,7 @@ import { determineGender } from 'utils';
 const TableBody = ({ filteredCharacterList }) => (
   <tbody>
     {filteredCharacterList.map(character => (
-      <tr key={character.name}>
+      <tr key={character.id}>
         <td>{character.name}</td>
         <td>{determineGender(character.gender)}</td>
         <td>{character.height === 'unknown' ? 'N/A' : character.height}</td>

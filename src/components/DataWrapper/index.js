@@ -9,7 +9,7 @@ class DataWrapper extends React.Component {
     loading: false,
     movieList: [],
     characterList: [],
-    selectedMovie: null,
+    selectedMovieId: null,
     loadingText: null,
     filter: 'all',
     characterListOrder: {
@@ -35,12 +35,12 @@ class DataWrapper extends React.Component {
     this.setState({ characterList, loading: false, loadingText: null });
   };
 
-  onSelectedMovieChange = event => {
+  onselectedMovieIdChange = event => {
     const { movieList } = this.state;
     const movieId = movieList.findIndex(movie => String(movie.episode_id) === event.target.value);
     if (movieId !== null) {
       this.fetchCharacters(movieList[movieId].characters);
-      this.setState({ selectedMovie: movieId });
+      this.setState({ selectedMovieId: movieId });
     }
   };
 
@@ -71,7 +71,7 @@ class DataWrapper extends React.Component {
     const contextData = {
       ...this.state,
       onfilterChange: this.onfilterChange,
-      onSelectedMovieChange: this.onSelectedMovieChange,
+      onselectedMovieIdChange: this.onselectedMovieIdChange,
       sortCharactersBy: this.sortCharactersBy,
     };
     return <AppContext.Provider value={contextData}>{children}</AppContext.Provider>;

@@ -4,8 +4,8 @@ import AppContext from 'context';
 
 const OpeningCrawl = () => (
   <AppContext.Consumer>
-    {({ selectedMovie, movieList }) => {
-      const { opening_crawl } = movieList[selectedMovie];
+    {({ selectedMovieId, movieList }) => {
+      const { opening_crawl } = movieList[selectedMovieId];
       return (
         <div className="opening-crawl-marquee">
           <p>{opening_crawl}</p>

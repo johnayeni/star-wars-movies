@@ -70,6 +70,11 @@ export const convertCentimetresToFeetPerInches = (cm) => {
   const inches = Math.round((realFeet - feet) * 12);
   return { feet, inches };
 };
+/**
+ * This function extracts a charcter's id from its url
+ * @param {*} url
+ */
+export const getCharacterIdFromURL = url => Number.parseInt(url.replace(/^\D+/g, ''), 10);
 
 /**
  * This function is for handling errors
@@ -79,5 +84,5 @@ export const handleError = (message) => {
   toast.error(message || 'An error has occured', {
     position: toast.POSITION.BOTTOM_CENTER,
   });
-  throw new Error(message);
+  console.log(message);
 };

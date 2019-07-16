@@ -10,15 +10,15 @@ import AppContext from 'context';
 const App = () => (
   <DataWrapper>
     <AppContext.Consumer>
-      {({ loading, selectedMovie, movieList }) => (
+      {({ loading, selectedMovieId, movieList }) => (
         <div className="container">
           <DropdownInput />
           {loading && <Loader />}
           {!loading && (
             <React.Fragment>
-              {selectedMovie !== null ? (
+              {selectedMovieId !== null ? (
                 <React.Fragment>
-                  <p className="movie-title">{movieList[selectedMovie].title}</p>
+                  <p className="movie-title">{movieList[selectedMovieId].title}</p>
                   <OpeningCrawl />
                   <CharacterList />
                 </React.Fragment>

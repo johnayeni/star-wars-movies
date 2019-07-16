@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { sort, handleError } from 'utils';
+import { sort, getCharacterIdFromURL, handleError } from 'utils';
+import LocalDB from './localDB';
 import { API_URL, ASCENDING_ORDER, DATE } from './constants';
 
 class API {
@@ -23,8 +24,24 @@ class API {
     try {
       const characterList = await Promise.all(
         charactersUrls.map(async (url) => {
-          const { data } = await this.fetchData(url);
-          return data;
+          const characterId = getCharacterIdFromURL(url);
+          const localData = await LocalDB.getCharacter(characterId);
+          if (localData) return localData;
+          const {
+            data: { name, gender, height },
+          } = await this.fetchData(url);
+          LocalDB.storeCharacter({
+            name,
+            gender,
+            height,
+            id: characterId,
+          });
+          return {
+            name,
+            gender,
+            height,
+            id: characterId,
+          };
         }),
       );
       return characterList;

@@ -4,10 +4,10 @@ import { verifyArray } from 'utils';
 
 const DropdownInput = () => (
   <AppContext.Consumer>
-    {({ movieList, loading, onSelectedMovieChange }) => (
+    {({ movieList, loading, onselectedMovieIdChange }) => (
       <select
         className="select-input"
-        onChange={onSelectedMovieChange}
+        onChange={onselectedMovieIdChange}
         disabled={!verifyArray(movieList) || loading}
       >
         {verifyArray(movieList) ? (

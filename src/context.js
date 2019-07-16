@@ -3,7 +3,7 @@ import React from 'react';
 const AppContext = React.createContext({
   loading: false,
   movieList: [],
-  selectedMovie: null,
+  selectedMovieId: null,
   loadingText: '',
   filter: '',
   characterListOrder: {
@@ -12,7 +12,7 @@ const AppContext = React.createContext({
     height: '',
   },
   onfilterChange: () => {},
-  onSelectedMovieChange: () => {},
+  onselectedMovieIdChange: () => {},
   sortCharactersBy: () => {},
 });
 
