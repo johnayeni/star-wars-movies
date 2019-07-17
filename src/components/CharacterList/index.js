@@ -20,7 +20,6 @@ const CharacterList = () => (
       return (
         <div id="characters">
           <p className="title">Characters</p>
-          <hr />
           <GenderFilter />
           {verifyArray(filteredCharacterList) ? (
             <React.Fragment>

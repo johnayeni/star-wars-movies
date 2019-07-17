@@ -5,7 +5,7 @@ const GenderFilter = () => (
   <AppContext.Consumer>
     {({ onfilterChange, filter, characters: { genders } }) => (
       <div className="switch-field">
-        <p className="text--white">Gender Filter</p>
+        <label>GENDER FILTER</label>
         {genders.map((gender, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <React.Fragment key={index}>
