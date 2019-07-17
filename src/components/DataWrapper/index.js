@@ -1,80 +1,77 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AppContext from 'context';
+import { SortCharacters } from 'utils';
+import * as API from 'api';
 import { DESCENDING_ORDER, STRING } from '../../constants';
-import { sortCharacters } from 'utils';
-import API from 'api';
 
-class DataWrapper extends React.Component {
-  state = {
-    loading: false,
-    movieList: [],
-    characters: {
-      list: [],
-      order: {
-        name: DESCENDING_ORDER,
-        gender: DESCENDING_ORDER,
-        height: DESCENDING_ORDER,
-      },
+const DataWrapper = ({ children }) => {
+  const [loading, setLoading] = useState(false);
+  const [movieList, setMovieList] = useState([]);
+  const [selectedMovieId, setSelectedMovieId] = useState(null);
+  const [loadingText, setLoadingText] = useState(null);
+  const [filter, setFilter] = useState('all');
+  const [characters, setCharcters] = useState({
+    list: [],
+    order: {
+      name: DESCENDING_ORDER,
+      gender: DESCENDING_ORDER,
+      height: DESCENDING_ORDER,
     },
-    selectedMovieId: null,
-    loadingText: null,
-    filter: 'all',
+  });
+
+  const fetchMovies = async () => {
+    setLoading(true);
+    setLoadingText('Fetching Movies ...');
+    const data = await API.fetchMovies();
+    setMovieList(data);
+    setLoading(false);
+    setLoadingText('null');
   };
 
-  componentDidMount() {
-    this.fetchMovies();
-  }
-
-  fetchMovies = async () => {
-    this.setState({ loading: true, loadingText: 'Getting movies ...' });
-    const movieList = await API.fetchMovies();
-    this.setState({ movieList, loading: false, loadingText: null });
+  const fetchCharacters = async (charactersUrls) => {
+    setLoading(true);
+    setLoadingText('The force is searching ...');
+    setCharcters({ ...characters, list: [] });
+    const data = await API.fetchCharacters(charactersUrls);
+    setLoading(false);
+    setLoadingText(null);
+    setCharcters({ ...characters, list: data });
   };
 
-  fetchCharacters = async charactersUrls => {
-    const { characters } = this.state;
-    this.setState({
-      characters: { ...characters, list: [] },
-      loading: true,
-      loadingText: 'The force is searching ...',
-    });
-    const characterList = await API.fetchCharacters(charactersUrls);
-    this.setState({
-      characters: { ...characters, list: characterList },
-      loading: false,
-      loadingText: null,
-    });
+  const onfilterChange = (event) => {
+    setFilter(event.target.value);
   };
 
-  onselectedMovieIdChange = event => {
-    const { movieList } = this.state;
+  const sortCharacters = (key, type = STRING) => {
+    const sortedCharcters = SortCharacters(characters, key, type);
+    setCharcters(sortedCharcters);
+  };
+
+  const onselectedMovieIdChange = (event) => {
     const movieId = movieList.findIndex(movie => String(movie.episode_id) === event.target.value);
     if (movieId !== null) {
-      this.fetchCharacters(movieList[movieId].characters);
-      this.setState({ selectedMovieId: movieId });
+      fetchCharacters(movieList[movieId].characters);
+      setSelectedMovieId(movieId);
     }
   };
 
-  onfilterChange = event => {
-    this.setState({ filter: event.target.value });
+  useEffect(() => {
+    fetchMovies();
+  }, []);
+
+  const contextData = {
+    loading,
+    loadingText,
+    characters,
+    movieList,
+    selectedMovieId,
+    filter,
+    onfilterChange,
+    onselectedMovieIdChange,
+    sortCharacters,
   };
 
-  sortCharacters = (key, type = STRING) => {
-    const { characters } = this.state;
-    const sortedCharcters = sortCharacters(characters, key, type);
-    this.setState({ characters: sortedCharcters });
-  };
-
-  render() {
-    const { children } = this.props;
-    const contextData = {
-      ...this.state,
-      onfilterChange: this.onfilterChange,
-      onselectedMovieIdChange: this.onselectedMovieIdChange,
-      sortCharacters: this.sortCharacters,
-    };
-    return <AppContext.Provider value={contextData}>{children}</AppContext.Provider>;
-  }
-}
+  return <AppContext.Provider value={contextData}>{children}</AppContext.Provider>;
+};
 
 export default DataWrapper;

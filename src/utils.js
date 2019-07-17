@@ -36,11 +36,11 @@ export const sortHelper = (a, b, key, order, type) => {
   return order === ASCENDING_ORDER ? comparison * -1 : comparison;
 };
 
-export const sortCharacters = (characters, key, type) => {
+export const SortCharacters = (characters, key, type) => {
   const { list, order } = characters;
   const reverseOrder = order[key] === ASCENDING_ORDER ? DESCENDING_ORDER : ASCENDING_ORDER;
   const sortedList = list.sort((a, b) => sortHelper(a, b, key, reverseOrder, type));
-  return { list: sortedList, order: { ...order, [key]: reverseOrder }}
+  return { list: sortedList, order: { ...order, [key]: reverseOrder } };
 };
 
 /**
