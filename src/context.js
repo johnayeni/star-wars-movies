@@ -8,6 +8,7 @@ const AppContext = React.createContext({
   filter: '',
   characters: {
     list: [],
+    genders: [],
     order: {
       name: '',
       gender: '',

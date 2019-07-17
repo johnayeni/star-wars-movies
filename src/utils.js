@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import {
-  ASCENDING_ORDER, DESCENDING_ORDER, GENDERS, NUMBER, DATE,
+  ASCENDING_ORDER, DESCENDING_ORDER, NUMBER, DATE,
 } from './constants';
 
 /**
@@ -37,18 +37,11 @@ export const sortHelper = (a, b, key, order, type) => {
 };
 
 export const SortCharacters = (characters, key, type) => {
-  const { list, order } = characters;
+  const { list, order, genders } = characters;
   const reverseOrder = order[key] === ASCENDING_ORDER ? DESCENDING_ORDER : ASCENDING_ORDER;
   const sortedList = list.sort((a, b) => sortHelper(a, b, key, reverseOrder, type));
-  return { list: sortedList, order: { ...order, [key]: reverseOrder } };
+  return { list: sortedList, order: { ...order, [key]: reverseOrder }, genders };
 };
-
-/**
- * This function returns a short value for a string with a gender value
- * e.g returns M for male
- * @param {String} value
- */
-export const determineGender = value => GENDERS[value.toLowerCase()] || 'N/A';
 
 /**
  * Checks if a paramenter is an array and if the length is graeter than 0

@@ -12,6 +12,7 @@ const DataWrapper = ({ children }) => {
   const [filter, setFilter] = useState('all');
   const [characters, setCharcters] = useState({
     list: [],
+    genders: [],
     order: {
       name: DESCENDING_ORDER,
       gender: DESCENDING_ORDER,
@@ -31,11 +32,11 @@ const DataWrapper = ({ children }) => {
   const fetchCharacters = async (charactersUrls) => {
     setLoading(true);
     setLoadingText('The force is searching ...');
-    setCharcters({ ...characters, list: [] });
-    const data = await API.fetchCharacters(charactersUrls);
+    setCharcters({ ...characters, list: [], genders: [] });
+    const { list, uniqueGenders } = await API.fetchCharacters(charactersUrls);
     setLoading(false);
     setLoadingText(null);
-    setCharcters({ ...characters, list: data });
+    setCharcters({ ...characters, list, genders: ['all', ...uniqueGenders] });
   };
 
   const onfilterChange = (event) => {
@@ -49,9 +50,11 @@ const DataWrapper = ({ children }) => {
 
   const onselectedMovieIdChange = (event) => {
     const movieId = movieList.findIndex(movie => String(movie.episode_id) === event.target.value);
-    if (movieId !== null) {
+    if (movieId !== null && movieId >= 0) {
       fetchCharacters(movieList[movieId].characters);
       setSelectedMovieId(movieId);
+    } else {
+      setSelectedMovieId(null);
     }
   };
 

@@ -22,7 +22,7 @@ export const fetchMovies = async () => {
 
 export const fetchCharacters = async (charactersUrls) => {
   try {
-    const characterList = await Promise.all(
+    const list = await Promise.all(
       charactersUrls.map(async (url) => {
         const characterId = getCharacterIdFromURL(url);
         const localData = await LocalDB.getCharacter(characterId);
@@ -40,7 +40,9 @@ export const fetchCharacters = async (charactersUrls) => {
         return character;
       }),
     );
-    return characterList;
+    const genders = list.map(character => character.gender);
+    const uniqueGenders = new Set(genders);
+    return { list, uniqueGenders };
   } catch (error) {
     handleError(error.message);
     return [];

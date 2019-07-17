@@ -16,7 +16,7 @@ const App = () => (
           {loading && <Loader />}
           {!loading && (
             <React.Fragment>
-              {selectedMovieId !== null ? (
+              {selectedMovieId !== null && selectedMovieId >= 0 ? (
                 <React.Fragment>
                   <p className="movie-title">{movieList[selectedMovieId].title}</p>
                   <OpeningCrawl />
