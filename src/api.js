@@ -41,7 +41,7 @@ export const fetchCharacters = async (charactersUrls) => {
       }),
     );
     const genders = list.map(character => character.gender);
-    const uniqueGenders = new Set(genders);
+    const uniqueGenders = Array.from(new Set(genders));
     return { list, uniqueGenders };
   } catch (error) {
     handleError(error.message);

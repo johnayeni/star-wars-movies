@@ -3,7 +3,7 @@ import AppContext from 'context';
 
 const GenderFilter = () => (
   <AppContext.Consumer>
-    {({ onfilterChange, filter, characters: { genders } }) => (
+    {({ onfilterChange, filter, genders }) => (
       <div className="switch-field">
         <label>GENDER FILTER</label>
         {genders.map((gender, index) => (

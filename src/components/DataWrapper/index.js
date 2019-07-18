@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AppContext from 'context';
-import { SortCharacters } from 'utils';
 import * as API from 'api';
-import { DESCENDING_ORDER, STRING } from '../../constants';
+import { DESCENDING_ORDER, ASCENDING_ORDER, STRING } from '../../constants';
 
 const DataWrapper = ({ children }) => {
   const [loading, setLoading] = useState(false);
@@ -10,21 +9,20 @@ const DataWrapper = ({ children }) => {
   const [selectedMovieId, setSelectedMovieId] = useState(null);
   const [loadingText, setLoadingText] = useState(null);
   const [filter, setFilter] = useState('all');
-  const [characters, setCharcters] = useState({
-    list: [],
-    genders: [],
-    order: {
-      name: DESCENDING_ORDER,
-      gender: DESCENDING_ORDER,
-      height: DESCENDING_ORDER,
-    },
+  const [characterList, setCharcterList] = useState([]);
+  const [genders, setGenders] = useState([]);
+  const [sortBy, setSortBy] = useState(null);
+  const [order, setOrder] = useState({
+    name: DESCENDING_ORDER,
+    gender: DESCENDING_ORDER,
+    height: DESCENDING_ORDER,
   });
 
   const fetchMovies = async () => {
     setLoading(true);
     setLoadingText('Fetching Movies ...');
     const data = await API.fetchMovies();
-    setMovieList(data);
+    setMovieList([...data]);
     setLoading(false);
     setLoadingText('null');
   };
@@ -32,20 +30,21 @@ const DataWrapper = ({ children }) => {
   const fetchCharacters = async (charactersUrls) => {
     setLoading(true);
     setLoadingText('The force is searching ...');
-    setCharcters({ ...characters, list: [], genders: [] });
     const { list, uniqueGenders } = await API.fetchCharacters(charactersUrls);
     setLoading(false);
     setLoadingText(null);
-    setCharcters({ ...characters, list, genders: ['all', ...uniqueGenders] });
+    setCharcterList([...list]);
+    setGenders(['all', ...uniqueGenders]);
   };
 
   const onfilterChange = (event) => {
     setFilter(event.target.value);
   };
 
-  const sortCharacters = (key, type = STRING) => {
-    const sortedCharcters = SortCharacters(characters, key, type);
-    setCharcters(sortedCharcters);
+  const toggleKeyOrder = (key, type = STRING) => {
+    const reverseOrder = order[key] === ASCENDING_ORDER ? DESCENDING_ORDER : ASCENDING_ORDER;
+    setOrder({ ...order, [key]: reverseOrder });
+    setSortBy({ key, type });
   };
 
   const onselectedMovieIdChange = (event) => {
@@ -65,13 +64,16 @@ const DataWrapper = ({ children }) => {
   const contextData = {
     loading,
     loadingText,
-    characters,
+    characterList,
     movieList,
+    genders,
+    sortBy,
+    order,
     selectedMovieId,
     filter,
     onfilterChange,
     onselectedMovieIdChange,
-    sortCharacters,
+    toggleKeyOrder,
   };
 
   return <AppContext.Provider value={contextData}>{children}</AppContext.Provider>;

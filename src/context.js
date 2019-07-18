@@ -6,18 +6,17 @@ const AppContext = React.createContext({
   selectedMovieId: null,
   loadingText: '',
   filter: '',
-  characters: {
-    list: [],
-    genders: [],
-    order: {
-      name: '',
-      gender: '',
-      height: '',
-    },
+  characterList: [],
+  genders: [],
+  order: {
+    name: '',
+    gender: '',
+    height: '',
   },
+  sortBy: null,
   onfilterChange: () => {},
   onselectedMovieIdChange: () => {},
-  sortCharacters: () => {},
+  toggleKeyOrder: () => {},
 });
 
 export default AppContext;

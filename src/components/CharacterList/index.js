@@ -1,6 +1,6 @@
 import React from 'react';
 import AppContext from 'context';
-import { verifyArray, getTotalHeight, convertCentimetresToFeetPerInches } from 'utils';
+import { verifyArray, getTotalHeight, convertCentimetresToFeetPerInches, sortCharacters } from 'utils';
 import GenderFilter from 'components/GenderFilter';
 import TableHeader from './components/TableHeader';
 import TableBody from './components/TableBody';
@@ -8,10 +8,14 @@ import TableFooter from './components/TableFooter';
 
 const CharacterList = () => (
   <AppContext.Consumer>
-    {({ characters: { list }, filter, sortCharacters }) => {
-      let filteredCharacterList = [...list];
+    {({ characterList, sortBy, order, filter, toggleKeyOrder }) => {
+      let filteredCharacterList = [...characterList];
       if (filter !== 'all') {
-        filteredCharacterList = list.filter(character => character.gender === filter);
+        filteredCharacterList = characterList.filter(character => character.gender === filter);
+      }
+      if (sortBy) {
+        const { key, type } = sortBy;
+        filteredCharacterList = sortCharacters(filteredCharacterList, key, order[key], type);
       }
       const charactersTotalHeight = filteredCharacterList.reduce(getTotalHeight, 0);
       const heightInFeetPerInches = convertCentimetresToFeetPerInches(charactersTotalHeight);
@@ -24,7 +28,7 @@ const CharacterList = () => (
           {verifyArray(filteredCharacterList) ? (
             <React.Fragment>
               <table className="character-list-table">
-                <TableHeader sortCharacters={sortCharacters} />
+                <TableHeader toggleKeyOrder={toggleKeyOrder} />
                 <TableBody filteredCharacterList={filteredCharacterList} />
                 <TableFooter
                   noOfCharacters={noOfCharacters}

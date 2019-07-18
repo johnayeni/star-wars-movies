@@ -1,7 +1,5 @@
 import { toast } from 'react-toastify';
-import {
-  ASCENDING_ORDER, DESCENDING_ORDER, NUMBER, DATE,
-} from './constants';
+import { ASCENDING_ORDER, NUMBER, DATE } from './constants';
 
 /**
  * This function is a sort function for  objects in an array.
@@ -36,12 +34,15 @@ export const sortHelper = (a, b, key, order, type) => {
   return order === ASCENDING_ORDER ? comparison * -1 : comparison;
 };
 
-export const SortCharacters = (characters, key, type) => {
-  const { list, order, genders } = characters;
-  const reverseOrder = order[key] === ASCENDING_ORDER ? DESCENDING_ORDER : ASCENDING_ORDER;
-  const sortedList = list.sort((a, b) => sortHelper(a, b, key, reverseOrder, type));
-  return { list: sortedList, order: { ...order, [key]: reverseOrder }, genders };
-};
+/**
+ * This funcction is to sort a list of characters based on a particular
+ * key and order
+ * @param {Array} characters
+ * @param {String} key
+ * @param {String} order
+ * @param {String} type
+ */
+export const sortCharacters = (characters, key, order, type) => characters.sort((a, b) => sortHelper(a, b, key, order, type));
 
 /**
  * Checks if a paramenter is an array and if the length is graeter than 0
