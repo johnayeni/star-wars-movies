@@ -13,8 +13,9 @@ const App = () => (
       {({ loading, selectedMovieId, movieList }) => (
         <div className="container">
           <DropdownInput />
-          {loading && <Loader />}
-          {!loading && (
+          {loading ? (
+            <Loader />
+          ) : (
             <React.Fragment>
               {selectedMovieId !== null && selectedMovieId >= 0 ? (
                 <React.Fragment>
