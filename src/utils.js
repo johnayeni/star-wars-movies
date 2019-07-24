@@ -82,6 +82,9 @@ export const getCharacterIdFromURL = url => Number.parseInt(url.replace(/^\D+/g,
  * @param {String} message
  */
 export const handleError = (message) => {
-  toast.error(message || 'An error has occured');
+  toast.dismiss();
+  toast.error(message || 'An error has occured', {
+    autoClose: 15000,
+  });
   console.log(message);
 };

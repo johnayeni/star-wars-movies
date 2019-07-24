@@ -14,7 +14,7 @@ const AppReducer = (state, action) => {
     case SET_LOADING:
       return { ...state, loading: action.value, loadingText: action.text };
     case SET_GENDERS:
-      return { ...state, genders: ['all', ...action.genders] };
+      return { ...state, genders: action.genders.length > 0 ? ['all', ...action.genders] : [] };
     case SET_MOVIE_LIST:
       return { ...state, movieList: [...action.data] };
     case SET_CHARACTER_LIST:

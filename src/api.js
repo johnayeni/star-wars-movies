@@ -1,10 +1,7 @@
 import axios from 'axios';
-import axiosRetry from 'axios-retry';
 import { sortHelper, getCharacterIdFromURL, handleError } from 'utils';
 import * as LocalDB from './localDB';
 import { API_URL, DESCENDING_ORDER, DATE } from './constants';
-
-axiosRetry(axios, { retries: 3 });
 
 export const fetchData = url => axios.get(url);
 
@@ -45,6 +42,6 @@ export const fetchCharacters = async (charactersUrls) => {
     return { list, uniqueGenders };
   } catch (error) {
     handleError(error.message);
-    return [];
+    return { list: [], uniqueGenders: [] };
   }
 };

@@ -47,7 +47,7 @@ const DataWrapper = ({ children }) => {
   const toggleKeyOrder = (key, type = STRING) => {
     const { order } = state;
     const reverseOrder = order[key] === ASCENDING_ORDER ? DESCENDING_ORDER : ASCENDING_ORDER;
-    
+
     dispatch({ type: SET_ORDER, key, value: reverseOrder });
     dispatch({ type: SET_SORT_BY, value: { key, type } });
   };
