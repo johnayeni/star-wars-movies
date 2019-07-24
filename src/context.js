@@ -1,19 +1,8 @@
 import React from 'react';
+import { APP_INITIAL_STATE } from './constants';
 
 const AppContext = React.createContext({
-  loading: false,
-  movieList: [],
-  selectedMovieId: null,
-  loadingText: '',
-  filter: '',
-  characterList: [],
-  genders: [],
-  order: {
-    name: '',
-    gender: '',
-    height: '',
-  },
-  sortBy: null,
+  ...APP_INITIAL_STATE,
   onfilterChange: () => {},
   onselectedMovieIdChange: () => {},
   toggleKeyOrder: () => {},

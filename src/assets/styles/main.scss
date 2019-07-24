@@ -25,6 +25,7 @@ body {
   margin: auto;
   margin-top: 10vh;
   display: flex;
+  overflow-x: hidden;
   flex-direction: column;
   justify-content: center;
   * {
@@ -46,7 +47,7 @@ body {
   color: $yellow;
   border: 2px solid $yellow;
   width: 100%;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-family: 'Soloist', sans-serif;
   &:disabled {
     border: 1px solid $gray;
@@ -114,7 +115,7 @@ body {
   font-family: 'Montserrat', sans-serif;
   border-collapse: collapse;
   width: 100%;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   text-align: left;
   white-space: nowrap;
   thead {
