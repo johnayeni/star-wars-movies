@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from 'react';
 import AppContext from 'context';
 import * as API from 'api';
-import Reducer from 'reducer';
+import AppReducer from 'reducer';
 import {
   APP_INITIAL_STATE,
   SET_CHARACTER_LIST,
@@ -18,7 +18,7 @@ import {
 } from '../../constants';
 
 const DataWrapper = ({ children }) => {
-  const [state, dispatch] = useReducer(Reducer, APP_INITIAL_STATE);
+  const [state, dispatch] = useReducer(AppReducer, APP_INITIAL_STATE);
 
   const fetchMovies = async () => {
     dispatch({ type: SET_LOADING, value: true, text: 'Getting movies ...' });

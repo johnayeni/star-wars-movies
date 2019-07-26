@@ -28,7 +28,7 @@ const AppReducer = (state, action) => {
     case SET_ORDER:
       return { ...state, order: { ...action.order, [action.key]: action.value } };
     default:
-      throw new Error();
+      return { ...state };
   }
 };
 
