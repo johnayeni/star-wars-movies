@@ -20,15 +20,14 @@ export const fetchMovies = async () => {
 };
 
 export const fetchCharacters = async (movieId, charactersUrls) => {
-  console.log(charactersUrls);
   try {
     let list = localData[movieId];
     if (!list) {
       list = await Promise.all(
         charactersUrls.map(async (url) => {
-          // const characterId = getCharacterIdFromURL(url);
-          // const localData = await LocalDB.getCharacter(characterId);
-          // if (localData) return localData;
+          const characterId = getCharacterIdFromURL(url);
+          const storedCharacter = await LocalDB.getCharacter(characterId);
+          if (storedCharacter) return storedCharacter;
           const {
             data: { name, gender, height },
           } = await fetchData(url);
@@ -36,19 +35,18 @@ export const fetchCharacters = async (movieId, charactersUrls) => {
             name,
             gender,
             height,
-            // id: characterId,
+            id: characterId,
           };
-          // LocalDB.storeCharacter(character);
+          LocalDB.storeCharacter(character);
           return character;
         }),
       );
       localData[movieId] = list;
-      const genders = list.map(character => character.gender);
-      const uniqueGenders = Array.from(new Set(genders));
-      return { list, uniqueGenders };
     }
+    const genders = list.map(character => character.gender);
+    const uniqueGenders = Array.from(new Set(genders));
+    return { list, uniqueGenders };
   } catch (error) {
-    console.log(error);
     handleError(error.message);
     return { list: [], uniqueGenders: [] };
   }

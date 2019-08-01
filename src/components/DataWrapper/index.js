@@ -29,10 +29,10 @@ const DataWrapper = ({ children }) => {
     dispatch({ type: SET_LOADING, value: false, text: null });
   };
 
-  const fetchCharacters = async (charactersUrls) => {
+  const fetchCharacters = async (movieId, charactersUrls) => {
     dispatch({ type: SET_LOADING, value: true, text: 'The force is searching ...' });
 
-    const { list, uniqueGenders } = await API.fetchCharacters(charactersUrls);
+    const { list, uniqueGenders } = await API.fetchCharacters(movieId, charactersUrls);
 
     dispatch({ type: SET_LOADING, value: false, text: null });
     dispatch({ type: SET_FILTER, filter: 'all' });
@@ -56,7 +56,7 @@ const DataWrapper = ({ children }) => {
     const { movieList } = state;
     const movieId = movieList.findIndex(movie => String(movie.episode_id) === event.target.value);
     if (movieId !== null && movieId >= 0) {
-      fetchCharacters(movieList[movieId].episode_id, movieList[movieId].characters);
+      fetchCharacters(movieId, movieList[movieId].characters);
       dispatch({ type: SET_SELECTED_MOVIE_ID, value: movieId });
     } else {
       dispatch({ type: SET_SELECTED_MOVIE_ID, value: null });
