@@ -66,6 +66,7 @@ export const getTotalHeight = (total, character) => {
  * @param {Number} cm
  */
 export const convertCentimetresToFeetPerInches = (cm) => {
+  if (typeof cm !== 'number') return null;
   const realFeet = (cm * 0.3937) / 12;
   const feet = Math.floor(realFeet);
   const inches = Math.round((realFeet - feet) * 12);
@@ -75,8 +76,11 @@ export const convertCentimetresToFeetPerInches = (cm) => {
  * This function extracts a charcter's id from its url
  * @param {*} url
  */
-export const getCharacterIdFromURL = url => Number.parseInt(url.replace(/^\D+/g, ''), 10);
-
+export const getCharacterIdFromURL = (url) => {
+  let id = null;
+  if (typeof url === 'string') id = Number.parseInt(url.replace(/^\D+/g, ''), 10);
+  return isNaN(id) ? null : id;
+};
 /**
  * This function is for handling errors
  * @param {String} message

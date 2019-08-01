@@ -3,6 +3,8 @@ import { sortHelper, getCharacterIdFromURL, handleError } from 'utils';
 import * as LocalDB from './localDB';
 import { API_URL, DESCENDING_ORDER, DATE } from './constants';
 
+const localData = {};
+
 export const fetchData = url => axios.get(url);
 
 export const fetchMovies = async () => {
@@ -17,30 +19,36 @@ export const fetchMovies = async () => {
   }
 };
 
-export const fetchCharacters = async (charactersUrls) => {
+export const fetchCharacters = async (movieId, charactersUrls) => {
+  console.log(charactersUrls);
   try {
-    const list = await Promise.all(
-      charactersUrls.map(async (url) => {
-        const characterId = getCharacterIdFromURL(url);
-        const localData = await LocalDB.getCharacter(characterId);
-        if (localData) return localData;
-        const {
-          data: { name, gender, height },
-        } = await fetchData(url);
-        const character = {
-          name,
-          gender,
-          height,
-          id: characterId,
-        };
-        LocalDB.storeCharacter(character);
-        return character;
-      }),
-    );
-    const genders = list.map(character => character.gender);
-    const uniqueGenders = Array.from(new Set(genders));
-    return { list, uniqueGenders };
+    let list = localData[movieId];
+    if (!list) {
+      list = await Promise.all(
+        charactersUrls.map(async (url) => {
+          // const characterId = getCharacterIdFromURL(url);
+          // const localData = await LocalDB.getCharacter(characterId);
+          // if (localData) return localData;
+          const {
+            data: { name, gender, height },
+          } = await fetchData(url);
+          const character = {
+            name,
+            gender,
+            height,
+            // id: characterId,
+          };
+          // LocalDB.storeCharacter(character);
+          return character;
+        }),
+      );
+      localData[movieId] = list;
+      const genders = list.map(character => character.gender);
+      const uniqueGenders = Array.from(new Set(genders));
+      return { list, uniqueGenders };
+    }
   } catch (error) {
+    console.log(error);
     handleError(error.message);
     return { list: [], uniqueGenders: [] };
   }

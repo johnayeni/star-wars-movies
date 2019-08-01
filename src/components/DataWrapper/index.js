@@ -56,7 +56,7 @@ const DataWrapper = ({ children }) => {
     const { movieList } = state;
     const movieId = movieList.findIndex(movie => String(movie.episode_id) === event.target.value);
     if (movieId !== null && movieId >= 0) {
-      fetchCharacters(movieList[movieId].characters);
+      fetchCharacters(movieList[movieId].episode_id, movieList[movieId].characters);
       dispatch({ type: SET_SELECTED_MOVIE_ID, value: movieId });
     } else {
       dispatch({ type: SET_SELECTED_MOVIE_ID, value: null });
