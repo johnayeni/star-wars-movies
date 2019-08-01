@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import DropdownInput from 'components/DropdownInput';
 import OpeningCrawl from 'components/OpeningCrawl';
 import CharacterList from 'components/CharacterList';
@@ -21,7 +21,9 @@ const App = () => (
                 <React.Fragment>
                   <p className="movie-title">{movieList[selectedMovieId].title}</p>
                   <OpeningCrawl />
-                  <CharacterList />
+                  <Suspense>
+                    <CharacterList />
+                  </Suspense>
                 </React.Fragment>
               ) : (
                 <StarwarsLogo />
