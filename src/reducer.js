@@ -16,15 +16,15 @@ const AppReducer = (state, action) => {
     case SET_GENDERS:
       return { ...state, genders: action.genders.length > 0 ? ['all', ...action.genders] : [] };
     case SET_MOVIE_LIST:
-      return { ...state, movieList: [...action.data] };
+      return { ...state, movieList: action.data };
     case SET_CHARACTER_LIST:
-      return { ...state, characterList: [...action.list] };
+      return { ...state, characterList: action.list };
     case SET_SELECTED_MOVIE_ID:
       return { ...state, selectedMovieId: action.value };
     case SET_FILTER:
       return { ...state, filter: action.filter };
     case SET_SORT_BY:
-      return { ...state, sortBy: { ...action.value } };
+      return { ...state, sortBy: action.value };
     case SET_ORDER:
       return { ...state, order: { ...action.order, [action.key]: action.value } };
     default:
