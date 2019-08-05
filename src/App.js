@@ -1,39 +1,16 @@
-import React, { Suspense } from 'react';
-import DropdownInput from 'components/DropdownInput';
-import OpeningCrawl from 'components/OpeningCrawl';
-import CharacterList from 'components/CharacterList';
-import StarwarsLogo from 'components/StarwarsLogo';
-import Loader from 'components/Loader';
+import React from 'react';
 import DataWrapper from 'components/DataWrapper';
+import Root from 'components/Root';
 import AppContext from 'context';
 
 const App = () => (
-  <DataWrapper>
-    <AppContext.Consumer>
-      {({ loading, selectedMovieId, movieList }) => (
-        <div className="container">
-          <DropdownInput />
-          {loading ? (
-            <Loader />
-          ) : (
-            <React.Fragment>
-              {selectedMovieId !== null && selectedMovieId >= 0 ? (
-                <React.Fragment>
-                  <p className="movie-title">{movieList[selectedMovieId].title}</p>
-                  <OpeningCrawl />
-                  <Suspense>
-                    <CharacterList />
-                  </Suspense>
-                </React.Fragment>
-              ) : (
-                <StarwarsLogo />
-              )}
-            </React.Fragment>
-          )}
-        </div>
-      )}
-    </AppContext.Consumer>
-  </DataWrapper>
+  <DataWrapper
+    render={contextData => (
+      <AppContext.Provider value={contextData}>
+        <Root />
+      </AppContext.Provider>
+    )}
+  />
 );
 
 export default App;

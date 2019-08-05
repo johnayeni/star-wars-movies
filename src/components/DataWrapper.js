@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer } from 'react';
-import AppContext from 'context';
 import * as API from 'api';
 import AppReducer from 'reducer';
 import {
@@ -15,9 +14,9 @@ import {
   ASCENDING_ORDER,
   DESCENDING_ORDER,
   STRING,
-} from '../../constants';
+} from '../constants';
 
-const DataWrapper = ({ children }) => {
+const DataWrapper = ({ render }) => {
   const [state, dispatch] = useReducer(AppReducer, APP_INITIAL_STATE);
 
   const fetchMovies = async () => {
@@ -74,7 +73,7 @@ const DataWrapper = ({ children }) => {
     toggleKeyOrder,
   };
 
-  return <AppContext.Provider value={contextData}>{children}</AppContext.Provider>;
+  return <React.Fragment>{render(contextData)}</React.Fragment>;
 };
 
 export default DataWrapper;
