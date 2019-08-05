@@ -15,7 +15,7 @@
     "build": "react-scripts build",
     "test": "yarn test-utils && yarn test-components",
     "test-utils": "jest __tests__",
-    "test-components": "react-scripts test src",
+    "test-components": "CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

@@ -4,7 +4,7 @@ import { APP_INITIAL_STATE } from './constants';
 const AppContext = React.createContext({
   ...APP_INITIAL_STATE,
   onfilterChange: () => {},
-  onselectedMovieIdChange: () => {},
+  onselectedMovieIndexChange: () => {},
   toggleKeyOrder: () => {},
 });
 

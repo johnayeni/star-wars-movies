@@ -48,7 +48,7 @@ export const sortCharacters = (characters, key, order, type) => characters.sort(
  * Checks if a paramenter is an array and if the length is graeter than 0
  * @param {*} arr
  */
-export const verifyArray = arr => Array.isArray(arr) && arr.length > 0;
+export const isArrayAndHasContent = arr => Array.isArray(arr) && arr.length > 0;
 
 /**
  * This function is for a reducer function to sum the height value of an
@@ -81,6 +81,13 @@ export const getCharacterIdFromURL = (url) => {
   if (typeof url === 'string') id = Number.parseInt(url.replace(/^\D+/g, ''), 10);
   return isNaN(id) ? null : id;
 };
+/**
+ * Returns an array of unique gender value form the
+ * characters passed in as an array
+ * @param {Array} characterList
+ */
+export const getUniqueGenders = characterList => Array.from(new Set(characterList.map(character => character.gender)));
+
 /**
  * This function is for handling errors
  * @param {String} message

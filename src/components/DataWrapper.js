@@ -5,7 +5,6 @@ import {
   APP_INITIAL_STATE,
   SET_CHARACTER_LIST,
   SET_FILTER,
-  SET_GENDERS,
   SET_LOADING,
   SET_MOVIE_LIST,
   SET_ORDER,
@@ -31,12 +30,10 @@ const DataWrapper = ({ render }) => {
   const fetchCharacters = async (movieId, charactersUrls) => {
     dispatch({ type: SET_LOADING, value: true, text: 'The force is searching ...' });
 
-    const { list, uniqueGenders } = await API.fetchCharacters(movieId, charactersUrls);
-
+    const data = await API.fetchCharacters(movieId, charactersUrls);
     dispatch({ type: SET_LOADING, value: false, text: null });
     dispatch({ type: SET_FILTER, filter: 'all' });
-    dispatch({ type: SET_CHARACTER_LIST, list });
-    dispatch({ type: SET_GENDERS, genders: uniqueGenders });
+    dispatch({ type: SET_CHARACTER_LIST, data });
   };
 
   const onfilterChange = (event) => {
@@ -51,12 +48,15 @@ const DataWrapper = ({ render }) => {
     dispatch({ type: SET_SORT_BY, value: { key, type } });
   };
 
-  const onselectedMovieIdChange = (event) => {
+  const onselectedMovieIndexChange = (event) => {
     const { movieList } = state;
-    const movieId = movieList.findIndex(movie => String(movie.episode_id) === event.target.value);
-    if (movieId !== null && movieId >= 0) {
-      fetchCharacters(movieId, movieList[movieId].characters);
-      dispatch({ type: SET_SELECTED_MOVIE_ID, value: movieId });
+    const movieIndex = movieList.findIndex(
+      movie => String(movie.episode_id) === event.target.value,
+    );
+
+    if (movieIndex !== null && movieIndex >= 0) {
+      fetchCharacters(movieList[movieIndex].episode_id, movieList[movieIndex].characters);
+      dispatch({ type: SET_SELECTED_MOVIE_ID, value: movieIndex });
     } else {
       dispatch({ type: SET_SELECTED_MOVIE_ID, value: null });
     }
@@ -69,7 +69,7 @@ const DataWrapper = ({ render }) => {
   const contextData = {
     ...state,
     onfilterChange,
-    onselectedMovieIdChange,
+    onselectedMovieIndexChange,
     toggleKeyOrder,
   };
 

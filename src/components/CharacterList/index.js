@@ -1,6 +1,11 @@
 import React from 'react';
 import AppContext from 'context';
-import { verifyArray, getTotalHeight, convertCentimetresToFeetPerInches, sortCharacters } from 'utils';
+import {
+  isArrayAndHasContent,
+  getTotalHeight,
+  convertCentimetresToFeetPerInches,
+  sortCharacters,
+} from 'utils';
 import GenderFilter from 'components/GenderFilter';
 import TableHeader from './components/TableHeader';
 import TableBody from './components/TableBody';
@@ -8,7 +13,9 @@ import TableFooter from './components/TableFooter';
 
 const CharacterList = () => (
   <AppContext.Consumer>
-    {({ characterList, sortBy, order, filter, toggleKeyOrder }) => {
+    {({
+      characterList, sortBy, order, filter, toggleKeyOrder,
+    }) => {
       let filteredCharacterList = [...characterList];
       if (filter !== 'all') {
         filteredCharacterList = characterList.filter(character => character.gender === filter);
@@ -25,7 +32,7 @@ const CharacterList = () => (
         <div id="characters">
           <p className="title">Characters</p>
           <GenderFilter />
-          {verifyArray(filteredCharacterList) ? (
+          {isArrayAndHasContent(filteredCharacterList) ? (
             <React.Fragment>
               <table className="character-list-table">
                 <TableHeader toggleKeyOrder={toggleKeyOrder} />

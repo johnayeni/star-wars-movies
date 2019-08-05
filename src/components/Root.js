@@ -8,16 +8,16 @@ import AppContext from 'context';
 
 const Root = () => (
   <AppContext.Consumer>
-    {({ loading, selectedMovieId, movieList }) => (
+    {({ loading, selectedMovieIndex, movieList }) => (
       <div className="container">
         <DropdownInput />
         {loading ? (
           <Loader />
         ) : (
           <React.Fragment>
-            {selectedMovieId !== null && selectedMovieId >= 0 ? (
+            {selectedMovieIndex !== null && selectedMovieIndex >= 0 ? (
               <React.Fragment>
-                <p className="movie-title">{movieList[selectedMovieId].title}</p>
+                <p className="movie-title">{movieList[selectedMovieIndex].title}</p>
                 <OpeningCrawl />
                 <Suspense>
                   <CharacterList />

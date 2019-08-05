@@ -8,11 +8,10 @@ export const STRING = 'string';
 export const APP_INITIAL_STATE = {
   loading: false,
   movieList: [],
-  selectedMovieId: null,
+  selectedMovieIndex: null,
   loadingText: '',
   filter: 'all',
   characterList: [],
-  genders: [],
   order: {
     name: DESCENDING_ORDER,
     gender: DESCENDING_ORDER,
@@ -25,7 +24,6 @@ export const SET_LOADING = 'SET_LOADING';
 export const SET_MOVIE_LIST = 'SET_MOVIE_LIST';
 export const SET_CHARACTER_LIST = 'SET_CHARACTER_LIST';
 export const SET_SELECTED_MOVIE_ID = 'SET_SELECTED_MOVIE_ID';
-export const SET_GENDERS = 'SET_GENDERS';
 export const SET_ORDER = 'SET_ORDER';
 export const SET_SORT_BY = 'SET_SORT_BY';
 export const SET_FILTER = 'SET_FILTER';

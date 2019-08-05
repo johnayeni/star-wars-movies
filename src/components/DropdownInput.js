@@ -1,23 +1,26 @@
 import React from 'react';
 import AppContext from 'context';
-import { verifyArray } from 'utils';
+import { isArrayAndHasContent, sortHelper } from 'utils';
+import { DESCENDING_ORDER, DATE } from '../constants';
 
 const DropdownInput = () => (
   <AppContext.Consumer>
-    {({ movieList, loading, onselectedMovieIdChange }) => (
+    {({ movieList, loading, onselectedMovieIndexChange }) => (
       <select
         className="select-input"
-        onChange={onselectedMovieIdChange}
-        disabled={!verifyArray(movieList) || loading}
+        onChange={onselectedMovieIndexChange}
+        disabled={!isArrayAndHasContent(movieList) || loading}
       >
-        {verifyArray(movieList) ? (
+        {isArrayAndHasContent(movieList) ? (
           <React.Fragment>
             <option>Pick a movie</option>
-            {movieList.map(movie => (
-              <option key={movie.episode_id} value={movie.episode_id}>
-                {movie.title}
-              </option>
-            ))}
+            {movieList
+              .sort((a, b) => sortHelper(a, b, 'release_date', DESCENDING_ORDER, DATE))
+              .map(movie => (
+                <option key={movie.episode_id} value={movie.episode_id}>
+                  {movie.title}
+                </option>
+              ))}
           </React.Fragment>
         ) : (
           <option>No movies available</option>

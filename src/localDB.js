@@ -1,7 +1,9 @@
 import * as idb from 'idb';
 
 export const openDatabase = () => {
+  // eslint-disable-next-line no-undef
   if (!window.indexedDB) {
+    // eslint-disable-next-line no-console
     console.log(
       "Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.",
     );
@@ -14,18 +16,18 @@ export const openDatabase = () => {
   });
 };
 
-const createTransaction = async () => {
+const createObJextStore = async () => {
   const db = await openDatabase();
   const tx = db.transaction('characters', 'readwrite');
   return tx.objectStore('characters');
 };
 
 export const storeCharacter = async (character) => {
-  const store = await createTransaction();
+  const store = await createObJextStore();
   store.put({ ...character });
 };
 
 export const getCharacter = async (id) => {
-  const store = await createTransaction();
+  const store = await createObJextStore();
   return store.get(id);
 };

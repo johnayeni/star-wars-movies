@@ -1,8 +1,8 @@
-import { sortHelper, getCharacterIdFromURL, handleError } from 'utils';
+import { getCharacterIdFromURL, handleError } from 'utils';
 import * as LocalDB from './localDB';
-import { API_URL, DESCENDING_ORDER, DATE } from './constants';
+import { API_URL } from './constants';
 
-const localData = {};
+const memoryData = {};
 
 // eslint-disable-next-line no-undef
 export const fetchData = async url => (await fetch(url)).json();
@@ -10,7 +10,7 @@ export const fetchData = async url => (await fetch(url)).json();
 export const fetchMovies = async () => {
   try {
     const { results } = await fetchData(`${API_URL}/films`);
-    return results.sort((a, b) => sortHelper(a, b, 'release_date', DESCENDING_ORDER, DATE));
+    return results;
   } catch (error) {
     handleError(error.message);
     return [];
@@ -19,9 +19,9 @@ export const fetchMovies = async () => {
 
 export const fetchCharacters = async (movieId, charactersUrls) => {
   try {
-    let list = localData[movieId];
-    if (!list) {
-      list = await Promise.all(
+    let characterList = memoryData[movieId];
+    if (!characterList) {
+      characterList = await Promise.all(
         charactersUrls.map(async (url) => {
           const characterId = getCharacterIdFromURL(url);
           const storedCharacter = await LocalDB.getCharacter(characterId);
@@ -37,13 +37,11 @@ export const fetchCharacters = async (movieId, charactersUrls) => {
           return character;
         }),
       );
-      localData[movieId] = list;
+      memoryData[movieId] = characterList;
     }
-    const genders = list.map(character => character.gender);
-    const uniqueGenders = Array.from(new Set(genders));
-    return { list, uniqueGenders };
+    return characterList;
   } catch (error) {
     handleError(error.message);
-    return { list: [], uniqueGenders: [] };
+    return [];
   }
 };
