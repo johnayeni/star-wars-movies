@@ -1,17 +1,15 @@
-import axios from 'axios';
 import { sortHelper, getCharacterIdFromURL, handleError } from 'utils';
 import * as LocalDB from './localDB';
 import { API_URL, DESCENDING_ORDER, DATE } from './constants';
 
 const localData = {};
 
-export const fetchData = url => axios.get(url);
+// eslint-disable-next-line no-undef
+export const fetchData = async url => (await fetch(url)).json();
 
 export const fetchMovies = async () => {
   try {
-    const {
-      data: { results },
-    } = await fetchData(`${API_URL}/films`);
+    const { results } = await fetchData(`${API_URL}/films`);
     return results.sort((a, b) => sortHelper(a, b, 'release_date', DESCENDING_ORDER, DATE));
   } catch (error) {
     handleError(error.message);
@@ -28,9 +26,7 @@ export const fetchCharacters = async (movieId, charactersUrls) => {
           const characterId = getCharacterIdFromURL(url);
           const storedCharacter = await LocalDB.getCharacter(characterId);
           if (storedCharacter) return storedCharacter;
-          const {
-            data: { name, gender, height },
-          } = await fetchData(url);
+          const { name, gender, height } = await fetchData(url);
           const character = {
             name,
             gender,

@@ -14,27 +14,18 @@ export const openDatabase = () => {
   });
 };
 
-export const storeCharacter = async (character) => {
+const createTransaction = async () => {
   const db = await openDatabase();
-  if (!db) return;
   const tx = db.transaction('characters', 'readwrite');
-  const store = tx.objectStore('characters');
+  return tx.objectStore('characters');
+};
+
+export const storeCharacter = async (character) => {
+  const store = await createTransaction();
   store.put({ ...character });
-  // limit characters been stored on indexed db
-  store
-    .openCursor(null, 'prev')
-    .then(cursor => cursor.advance(300))
-    .then(function deleteRest(cursor) {
-      if (!cursor) return;
-      cursor.delete();
-      cursor.continue().then(deleteRest);
-    });
 };
 
 export const getCharacter = async (id) => {
-  const db = await openDatabase();
-  if (!db) return null;
-  const tx = db.transaction('characters');
-  const store = tx.objectStore('characters');
+  const store = await createTransaction();
   return store.get(id);
 };

@@ -158,6 +158,33 @@ body {
   color: $yellow;
 }
 
+.loader {
+  width: 2em;
+  height: 0.66em;
+  border: 0.05em currentcolor solid;
+  border-radius: 0.1em;
+  background: linear-gradient(
+    -60deg,
+    transparent 0%,
+    transparent 50%,
+    currentcolor 50%,
+    currentcolor 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 1em 2em;
+  background-position: 0 0;
+  animation: loader 0.8s infinite linear;
+}
+@keyframes loader {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -2em 0;
+  }
+}
+
 @keyframes marquee {
   0% {
     text-indent: 95%;

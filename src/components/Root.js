@@ -32,4 +32,5 @@ const Root = () => (
     )}
   </AppContext.Consumer>
 );
+
 export default Root;
