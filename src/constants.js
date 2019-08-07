@@ -7,23 +7,25 @@ export const STRING = 'string';
 
 export const APP_INITIAL_STATE = {
   loading: false,
-  movieList: [],
+  movies: [],
   selectedMovieIndex: null,
   loadingText: '',
   filter: 'all',
-  characterList: [],
-  order: {
-    name: DESCENDING_ORDER,
-    gender: DESCENDING_ORDER,
-    height: DESCENDING_ORDER,
+  characters: [],
+  sortOrder: {
+    name: '',
+    gender: '',
+    height: '',
   },
   sortBy: null,
+  errorMsg: null,
 };
 
 export const SET_LOADING = 'SET_LOADING';
-export const SET_MOVIE_LIST = 'SET_MOVIE_LIST';
-export const SET_CHARACTER_LIST = 'SET_CHARACTER_LIST';
-export const SET_SELECTED_MOVIE_ID = 'SET_SELECTED_MOVIE_ID';
-export const SET_ORDER = 'SET_ORDER';
+export const SET_MOVIES = 'SET_MOVIES';
+export const SET_CHARACTERS = 'SET_CHARACTERS';
+export const SET_SELECTED_MOVIE_INDEX = 'SET_SELECTED_MOVIE_INDEX';
+export const SET_SORT_ORDER = 'SET_SORT_ORDER';
 export const SET_SORT_BY = 'SET_SORT_BY';
 export const SET_FILTER = 'SET_FILTER';
+export const SET_ERROR_MSG = 'SET_ERROR_MSG';

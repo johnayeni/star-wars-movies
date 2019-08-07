@@ -4,8 +4,8 @@ import { isArrayAndHasContent, getUniqueGenders } from 'utils';
 
 const GenderFilter = () => (
   <AppContext.Consumer>
-    {({ onfilterChange, filter, characterList }) => {
-      const filters = ['all', ...getUniqueGenders(characterList)];
+    {({ onfilterChange, filter, characters }) => {
+      const filters = ['all', ...getUniqueGenders(characters)];
       return (
         <div className="switch-field">
           {isArrayAndHasContent(filters) && (

@@ -14,15 +14,15 @@ import TableFooter from './components/TableFooter';
 const CharacterList = () => (
   <AppContext.Consumer>
     {({
-      characterList, sortBy, order, filter, toggleKeyOrder,
+      characters, sortBy, sortOrder, filter, toggleKeyOrder,
     }) => {
-      let filteredCharacterList = [...characterList];
+      let filteredCharacterList = characters;
       if (filter !== 'all') {
-        filteredCharacterList = characterList.filter(character => character.gender === filter);
+        filteredCharacterList = characters.filter(character => character.gender === filter);
       }
       if (sortBy) {
         const { key, type } = sortBy;
-        filteredCharacterList = sortCharacters(filteredCharacterList, key, order[key], type);
+        filteredCharacterList = sortCharacters(filteredCharacterList, key, sortOrder[key], type);
       }
       const charactersTotalHeight = filteredCharacterList.reduce(getTotalHeight, 0);
       const heightInFeetPerInches = convertCentimetresToFeetPerInches(charactersTotalHeight);
@@ -35,7 +35,7 @@ const CharacterList = () => (
           {isArrayAndHasContent(filteredCharacterList) ? (
             <React.Fragment>
               <table className="character-list-table">
-                <TableHeader toggleKeyOrder={toggleKeyOrder} />
+                <TableHeader toggleKeyOrder={toggleKeyOrder} sortOrder={sortOrder} />
                 <TableBody filteredCharacterList={filteredCharacterList} />
                 <TableFooter
                   noOfCharacters={noOfCharacters}

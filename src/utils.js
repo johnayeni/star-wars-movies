@@ -1,17 +1,16 @@
-import { toast } from 'react-toastify';
 import { ASCENDING_ORDER, NUMBER, DATE } from './constants';
 
 /**
- * This function is a sort function for  objects in an array.
+ * This function is a sort comparator for objects in an array.
  * It compares two values and determines if thier order should be swapped
  *  depending and the order of the sorting
  * @param {*} a
  * @param {*} b
  * @param {String} key
- * @param {String} order
+ * @param {String} sortOrder
  * @param {String} type
  */
-export const sortHelper = (a, b, key, order, type) => {
+export const sortComparator = (a, b, key, sortOrder, type) => {
   let comparison = 0;
   let A;
   let B;
@@ -22,27 +21,26 @@ export const sortHelper = (a, b, key, order, type) => {
     A = new Date(a[key]);
     B = new Date(b[key]);
   } else {
-    A = a[key].toUpperCase();
-    B = b[key].toUpperCase();
+    A = a[key].toLowerCase();
+    B = b[key].toLowerCase();
   }
-
   if (A < B) {
     comparison = 1;
   } else if (A > B) {
     comparison = -1;
   }
-  return order === ASCENDING_ORDER ? comparison * -1 : comparison;
+  return sortOrder === ASCENDING_ORDER ? comparison * -1 : comparison;
 };
 
 /**
  * This funcction is to sort a list of characters based on a particular
- * key and order
+ * key and sortOrder
  * @param {Array} characters
  * @param {String} key
- * @param {String} order
+ * @param {String} sortOrder
  * @param {String} type
  */
-export const sortCharacters = (characters, key, order, type) => characters.sort((a, b) => sortHelper(a, b, key, order, type));
+export const sortCharacters = (characters, key, sortOrder, type) => characters.sort((a, b) => sortComparator(a, b, key, sortOrder, type));
 
 /**
  * Checks if a paramenter is an array and if the length is graeter than 0
@@ -84,18 +82,11 @@ export const getCharacterIdFromURL = (url) => {
 /**
  * Returns an array of unique gender value form the
  * characters passed in as an array
- * @param {Array} characterList
+ * @param {Array} characters
  */
-export const getUniqueGenders = characterList => Array.from(new Set(characterList.map(character => character.gender)));
+export const getUniqueGenders = characters => Array.from(new Set(characters.map(character => character.gender)));
 
 /**
  * This function is for handling errors
  * @param {String} message
  */
-export const handleError = (message) => {
-  toast.dismiss();
-  toast.error(message || 'An error has occured', {
-    autoClose: 15000,
-  });
-  console.log(message);
-};
