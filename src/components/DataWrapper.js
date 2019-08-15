@@ -3,7 +3,6 @@
 import React, { useEffect, useCallback } from 'react';
 import * as API from 'api';
 import useLocalStorage from 'useLocalStorage';
-import { compareObjFn } from 'utils';
 import {
   APP_INITIAL_STATE,
   SET_CHARACTERS,
@@ -16,7 +15,6 @@ import {
   ASCENDING_ORDER,
   DESCENDING_ORDER,
   STRING,
-  DATE,
 } from '../constants';
 
 const DataWrapper = ({ render }) => {
@@ -68,14 +66,7 @@ const DataWrapper = ({ render }) => {
         dispatch({ type: SET_LOADING, value: true, text: 'Getting movies ...' });
         try {
           const data = await API.fetchMovies();
-          const sortedMovieList = data.sort((currentMovie, nextMovie) => compareObjFn({
-            currentObj: currentMovie,
-            nextObj: nextMovie,
-            key: 'release_date',
-            sortOrder: DESCENDING_ORDER,
-            type: DATE,
-          }));
-          dispatch({ type: SET_MOVIES, movies: sortedMovieList });
+          dispatch({ type: SET_MOVIES, movies: data });
         } catch (error) {
           window.alert(error.message);
         } finally {
