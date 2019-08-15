@@ -11,14 +11,16 @@ export const APP_INITIAL_STATE = {
   selectedMovieIndex: null,
   loadingText: '',
   filter: 'all',
-  characters: [],
+  characters: {},
   sortOrder: {
     name: '',
     gender: '',
     height: '',
   },
-  sortBy: null,
-  errorMsg: null,
+  sortBy: {
+    key: null,
+    type: null,
+  },
 };
 
 export const SET_LOADING = 'SET_LOADING';
@@ -28,4 +30,3 @@ export const SET_SELECTED_MOVIE_INDEX = 'SET_SELECTED_MOVIE_INDEX';
 export const SET_SORT_ORDER = 'SET_SORT_ORDER';
 export const SET_SORT_BY = 'SET_SORT_BY';
 export const SET_FILTER = 'SET_FILTER';
-export const SET_ERROR_MSG = 'SET_ERROR_MSG';

@@ -1,46 +1,38 @@
-import { ASCENDING_ORDER, NUMBER, DATE } from './constants';
+import {
+  ASCENDING_ORDER, NUMBER, DATE, STRING,
+} from './constants';
 
 /**
  * This function is a sort comparator for objects in an array.
- * It compares two values and determines if thier order should be swapped
- *  depending and the order of the sorting
- * @param {*} a
- * @param {*} b
- * @param {String} key
- * @param {String} sortOrder
- * @param {String} type
+ * It compares two values and returns a numerical
+ * @param {Object} {}
  */
-export const sortComparator = (a, b, key, sortOrder, type) => {
+export const compareObjFn = ({
+  currentObj, nextObj, key, sortOrder, type = STRING,
+}) => {
   let comparison = 0;
-  let A;
-  let B;
-  if (type === NUMBER) {
-    A = Number(a[key]) || 0;
-    B = Number(b[key]) || 0;
-  } else if (type === DATE) {
-    A = new Date(a[key]);
-    B = new Date(b[key]);
-  } else {
-    A = a[key].toLowerCase();
-    B = b[key].toLowerCase();
+  if (!(currentObj && nextObj && key && sortOrder && type)) {
+    return comparison;
   }
-  if (A < B) {
+  let currentVal;
+  let nextVal;
+  if (type === NUMBER) {
+    currentVal = Number(currentObj[key]) || 0;
+    nextVal = Number(nextObj[key]) || 0;
+  } else if (type === DATE) {
+    currentVal = new Date(currentObj[key]);
+    nextVal = new Date(nextObj[key]);
+  } else {
+    currentVal = currentObj[key].toLowerCase();
+    nextVal = nextObj[key].toLowerCase();
+  }
+  if (nextVal < currentVal) {
     comparison = 1;
-  } else if (A > B) {
+  } else if (nextVal > currentVal) {
     comparison = -1;
   }
   return sortOrder === ASCENDING_ORDER ? comparison * -1 : comparison;
 };
-
-/**
- * This funcction is to sort a list of characters based on a particular
- * key and sortOrder
- * @param {Array} characters
- * @param {String} key
- * @param {String} sortOrder
- * @param {String} type
- */
-export const sortCharacters = (characters, key, sortOrder, type) => characters.sort((a, b) => sortComparator(a, b, key, sortOrder, type));
 
 /**
  * Checks if a paramenter is an array and if the length is graeter than 0
@@ -71,22 +63,9 @@ export const convertCentimetresToFeetPerInches = (cm) => {
   return { feet, inches };
 };
 /**
- * This function extracts a charcter's id from its url
- * @param {*} url
- */
-export const getCharacterIdFromURL = (url) => {
-  let id = null;
-  if (typeof url === 'string') id = Number.parseInt(url.replace(/^\D+/g, ''), 10);
-  return isNaN(id) ? null : id;
-};
-/**
  * Returns an array of unique gender value form the
  * characters passed in as an array
  * @param {Array} characters
  */
-export const getUniqueGenders = characters => Array.from(new Set(characters.map(character => character.gender)));
-
-/**
- * This function is for handling errors
- * @param {String} message
- */
+// eslint-disable-next-line max-len
+export const getUniqueGenders = (characters = []) => Array.from(new Set(characters.map(character => character.gender)));

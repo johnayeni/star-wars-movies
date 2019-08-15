@@ -4,7 +4,7 @@ import {
   isArrayAndHasContent,
   getTotalHeight,
   convertCentimetresToFeetPerInches,
-  sortCharacters,
+  compareObjFn,
 } from 'utils';
 import GenderFilter from 'components/GenderFilter';
 import TableHeader from './components/TableHeader';
@@ -14,29 +14,44 @@ import TableFooter from './components/TableFooter';
 const CharacterList = () => (
   <AppContext.Consumer>
     {({
-      characters, sortBy, sortOrder, filter, toggleKeyOrder,
+      movies,
+      characters,
+      sortOrder,
+      sortBy,
+      toggleKeyOrder,
+      selectedMovieIndex,
+      filter,
+      onfilterChange,
     }) => {
-      let filteredCharacterList = characters;
-      if (filter !== 'all') {
-        filteredCharacterList = characters.filter(character => character.gender === filter);
-      }
-      if (sortBy) {
-        const { key, type } = sortBy;
-        filteredCharacterList = sortCharacters(filteredCharacterList, key, sortOrder[key], type);
-      }
-      const charactersTotalHeight = filteredCharacterList.reduce(getTotalHeight, 0);
+      const { key, type } = sortBy;
+      const movieId = movies[selectedMovieIndex].episode_id;
+      const movieCharacters = characters[movieId];
+      const filteredAndSortedCharacters = movieCharacters
+        .filter(character => filter === 'all' || character.gender === filter)
+        .sort((currentCharacter, nextCharacter) => compareObjFn({
+          currentObj: currentCharacter,
+          nextObj: nextCharacter,
+          key,
+          sortOrder: sortOrder[key],
+          type,
+        }));
+      const charactersTotalHeight = movieCharacters.reduce(getTotalHeight, 0);
       const heightInFeetPerInches = convertCentimetresToFeetPerInches(charactersTotalHeight);
-      const noOfCharacters = filteredCharacterList.length;
+      const noOfCharacters = movieCharacters.length;
 
       return (
         <div id="characters">
           <p className="title">Characters</p>
-          <GenderFilter />
-          {isArrayAndHasContent(filteredCharacterList) ? (
+          <GenderFilter
+            characters={movieCharacters}
+            filter={filter}
+            onfilterChange={onfilterChange}
+          />
+          {isArrayAndHasContent(movieCharacters) ? (
             <React.Fragment>
               <table className="character-list-table">
                 <TableHeader toggleKeyOrder={toggleKeyOrder} sortOrder={sortOrder} />
-                <TableBody filteredCharacterList={filteredCharacterList} />
+                <TableBody characters={filteredAndSortedCharacters} />
                 <TableFooter
                   noOfCharacters={noOfCharacters}
                   heightInFeetPerInches={heightInFeetPerInches}

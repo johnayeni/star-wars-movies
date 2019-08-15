@@ -4,17 +4,13 @@ import OpeningCrawl from 'components/OpeningCrawl';
 import CharacterList from 'components/CharacterList';
 import StarwarsLogo from 'components/StarwarsLogo';
 import Loader from 'components/Loader';
-import Msg from 'components/Msg'
 import AppContext from 'context';
 
 
 const Root = () => (
   <AppContext.Consumer>
-    {({ loading, selectedMovieIndex, movies, errorMsg }) => (
+    {({ loading, selectedMovieIndex, movies }) => (
       <div className="container">
-        {
-          errorMsg && <Msg message={errorMsg} type="danger" />
-        }
         <DropdownInput />
         {loading ? (
           <Loader />

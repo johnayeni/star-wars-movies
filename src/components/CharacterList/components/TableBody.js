@@ -1,8 +1,8 @@
 import React from 'react';
 
-const TableBody = ({ filteredCharacterList }) => (
+const TableBody = ({ characters }) => (
   <tbody>
-    {filteredCharacterList.map((character, key) => (
+    {characters.map((character, key) => (
       // eslint-disable-next-line react/no-array-index-key
       <tr key={key}>
         <td>{character.name}</td>

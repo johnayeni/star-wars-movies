@@ -6,7 +6,6 @@ import {
   SET_SORT_ORDER,
   SET_SELECTED_MOVIE_INDEX,
   SET_SORT_BY,
-  SET_ERROR_MSG,
 } from './constants';
 
 const AppReducer = (state, action) => {
@@ -16,7 +15,7 @@ const AppReducer = (state, action) => {
     case SET_MOVIES:
       return { ...state, movies: action.movies };
     case SET_CHARACTERS:
-      return { ...state, characters: action.characters };
+      return { ...state, characters: { ...state.characters, [action.movieId]: action.characters } };
     case SET_SELECTED_MOVIE_INDEX:
       return { ...state, selectedMovieIndex: action.value };
     case SET_FILTER:
@@ -25,8 +24,6 @@ const AppReducer = (state, action) => {
       return { ...state, sortBy: action.value };
     case SET_SORT_ORDER:
       return { ...state, sortOrder: { ...action.sortOrder, [action.key]: action.value } };
-    case SET_ERROR_MSG:
-      return { ...state, errorMsg: action.msg };
     default:
       return state;
   }
