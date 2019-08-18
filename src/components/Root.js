@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import DropdownInput from 'components/DropdownInput';
 import OpeningCrawl from 'components/OpeningCrawl';
 import CharacterList from 'components/CharacterList';
@@ -20,9 +20,7 @@ const Root = () => (
               <React.Fragment>
                 <p className="movie-title">{movies[selectedMovieIndex].title}</p>
                 <OpeningCrawl />
-                <Suspense>
-                  <CharacterList />
-                </Suspense>
+                <CharacterList />
               </React.Fragment>
             ) : (
               <StarwarsLogo />
