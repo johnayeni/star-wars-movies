@@ -23,7 +23,7 @@ const DropdownInput = () => (
           {isArrayAndHasContent(sortedMovies) ? (
             <React.Fragment>
               <option>Pick a movie</option>
-              {movies.map(movie => (
+              {sortedMovies.map(movie => (
                 <option key={movie.episode_id} value={movie.episode_id}>
                   {movie.title}
                 </option>
