@@ -1,18 +1,15 @@
 /* eslint-disable camelcase */
-import React from 'react';
+import React, { useContext } from 'react';
 import AppContext from 'context';
 
-const OpeningCrawl = () => (
-  <AppContext.Consumer>
-    {({ selectedMovieIndex, movies }) => {
-      const { opening_crawl } = movies[selectedMovieIndex];
-      return (
-        <div className="opening-crawl-marquee">
-          <p>{opening_crawl}</p>
-        </div>
-      );
-    }}
-  </AppContext.Consumer>
-);
+const OpeningCrawl = () => {
+  const { selectedMovieIndex, movies } = useContext(AppContext);
+  const { opening_crawl } = movies[selectedMovieIndex];
+  return (
+    <div className="opening-crawl-marquee">
+      <p>{opening_crawl}</p>
+    </div>
+  );
+};
 
 export default OpeningCrawl;
