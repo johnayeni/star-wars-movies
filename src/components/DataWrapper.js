@@ -20,7 +20,7 @@ import {
 
 const runFnAndHandleError = (fn, ...args) => {
   try {
-    fn(args);
+    fn(...args);
   } catch (error) {
     window.alert(error.message);
   }
