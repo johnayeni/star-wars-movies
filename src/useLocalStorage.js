@@ -1,8 +1,7 @@
 /* eslint-disable no-undef */
 import { useReducer } from 'react';
-import AppReducer from './reducer';
 
-const useLocalStorage = (initialValue) => {
+const useLocalStorage = (reducer, initialValue) => {
   const getLocalState = () => {
     try {
       const item = localStorage.getItem('state');
@@ -12,10 +11,10 @@ const useLocalStorage = (initialValue) => {
     }
   };
 
-  const [state, setState] = useReducer(AppReducer, getLocalState());
+  const [state, setState] = useReducer(reducer, getLocalState());
 
-  const dispatch = (props) => {
-    setState(props);
+  const dispatch = (...actions) => {
+    actions.map(action => setState(action));
     localStorage.setItem('state', JSON.stringify(state));
   };
 
