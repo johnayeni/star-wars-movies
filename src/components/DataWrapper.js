@@ -18,9 +18,9 @@ import {
   STRING,
 } from '../constants';
 
-const runFnAndHandleError = (fn) => {
+const runFnAndHandleError = (fn, ...args) => {
   try {
-    fn();
+    fn(args);
   } catch (error) {
     window.alert(error.message);
   }
@@ -67,7 +67,7 @@ const DataWrapper = ({ render }) => {
     if (selectedMovieIndex !== null) {
       const movieId = movies[selectedMovieIndex].episode_id;
       if (!characters[movieId] || characters[movieId].length < 1) {
-        runFnAndHandleError(() => setCharacters(movieId, movies[selectedMovieIndex].characters));
+        runFnAndHandleError(setCharacters, movieId, movies[selectedMovieIndex].characters);
       }
     }
   }, [dispatch, state]), [state]);
