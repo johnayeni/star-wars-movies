@@ -82,8 +82,10 @@ const DataWrapper = ({ render }) => {
           },
         );
         const data = await API.fetchMovies();
-        dispatch({ type: SET_MOVIES, movies: data });
-        dispatch({ type: SET_LOADING, value: false, text: null });
+        dispatch(
+          { type: SET_MOVIES, movies: data },
+          { type: SET_LOADING, value: false, text: null },
+        );
       };
       dispatch({ type: SET_FILTER, filter: 'all' });
       runFnAndHandleError(setMovies);
