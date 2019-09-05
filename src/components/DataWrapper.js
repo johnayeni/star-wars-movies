@@ -29,19 +29,6 @@ const runFnAndHandleError = (fn) => {
 const DataWrapper = ({ render }) => {
   const [state, dispatch] = useLocalStorage(AppReducer, APP_INITIAL_STATE);
 
-  const setCharacters = async (movieId, characterUrls) => {
-    dispatch({
-      type: SET_LOADING,
-      value: true,
-      text: 'The force is searching ...',
-    });
-    const characters = await API.fetchCharacters(characterUrls);
-    dispatch(
-      { type: SET_CHARACTERS, movieId, characters },
-      { type: SET_LOADING, value: false, text: null },
-    );
-  };
-
   const onfilterChange = (event) => {
     dispatch({ type: SET_FILTER, filter: event.target.value });
   };
@@ -57,18 +44,33 @@ const DataWrapper = ({ render }) => {
 
   const onSelectedMovieIndexChange = (event) => {
     dispatch({ type: SET_FILTER, filter: 'all' });
-    const { movies, characters } = state;
+    const { movies } = state;
     const movieIndex = movies.findIndex(movie => String(movie.episode_id) === event.target.value);
-    if (movieIndex !== null && movieIndex >= 0) {
-      const movieId = movies[movieIndex].episode_id;
-      if (!characters[movieId] || characters[movieId].length < 1) {
-        runFnAndHandleError(() => setCharacters(movieId, movies[movieIndex].characters));
-      }
-      dispatch({ type: SET_SELECTED_MOVIE_INDEX, value: movieIndex });
-    } else {
-      dispatch({ type: SET_SELECTED_MOVIE_INDEX, value: null });
-    }
+    dispatch({ type: SET_SELECTED_MOVIE_INDEX, value: movieIndex >= 0 ? movieIndex : null });
   };
+
+  useEffect(useCallback(() => {
+    const setCharacters = async (movieId, characterUrls) => {
+      dispatch({
+        type: SET_LOADING,
+        value: true,
+        text: 'The force is searching ...',
+      });
+      const characters = await API.fetchCharacters(characterUrls);
+      dispatch(
+        { type: SET_CHARACTERS, movieId, characters },
+        { type: SET_LOADING, value: false, text: null },
+      );
+    };
+
+    const { selectedMovieIndex, characters, movies } = state;
+    if (selectedMovieIndex !== null) {
+      const movieId = movies[selectedMovieIndex].episode_id;
+      if (!characters[movieId] || characters[movieId].length < 1) {
+        runFnAndHandleError(() => setCharacters(movieId, movies[selectedMovieIndex].characters));
+      }
+    }
+  }, [dispatch, state]), [state]);
 
   useEffect(
     useCallback(() => {
@@ -87,6 +89,7 @@ const DataWrapper = ({ render }) => {
           { type: SET_LOADING, value: false, text: null },
         );
       };
+
       dispatch({ type: SET_FILTER, filter: 'all' });
       runFnAndHandleError(setMovies);
     }, [dispatch]),

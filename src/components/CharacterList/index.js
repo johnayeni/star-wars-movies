@@ -25,7 +25,7 @@ const CharacterList = () => {
 
   const { key, type } = sortBy;
   const movieId = movies[selectedMovieIndex].episode_id;
-  const movieCharacters = characters[movieId];
+  const movieCharacters = characters[movieId] || [];
   const filteredAndSortedCharacters = movieCharacters
     .filter(character => filter === 'all' || character.gender === filter)
     .sort((currentCharacter, nextCharacter) => compareObjFn({
@@ -42,11 +42,7 @@ const CharacterList = () => {
   return (
     <div id="characters">
       <p className="title">Characters</p>
-      <GenderFilter
-        characters={movieCharacters}
-        filter={filter}
-        onfilterChange={onfilterChange}
-      />
+      <GenderFilter characters={movieCharacters} filter={filter} onfilterChange={onfilterChange} />
       {isArrayAndHasContent(movieCharacters) ? (
         <React.Fragment>
           <table className="character-list-table">
