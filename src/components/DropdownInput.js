@@ -5,7 +5,7 @@ import { DESCENDING_ORDER, DATE } from '../constants';
 
 const DropdownInput = () => {
   const { movies, loading, onSelectedMovieIndexChange } = useContext(AppContext);
-  const sortedMovies = movies.sort((currentMovie, nextMovie) => compareObjFn({
+  const sortedMovies = [...movies].sort((currentMovie, nextMovie) => compareObjFn({
     currentObj: currentMovie,
     nextObj: nextMovie,
     key: 'release_date',

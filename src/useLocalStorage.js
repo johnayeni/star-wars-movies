@@ -14,7 +14,7 @@ const useLocalStorage = (reducer, initialValue) => {
   const [state, setState] = useReducer(reducer, getLocalState());
 
   const dispatch = (...actions) => {
-    actions.map(action => setState(action));
+    actions.forEach(action => setState(action));
     localStorage.setItem('state', JSON.stringify(state));
   };
 
