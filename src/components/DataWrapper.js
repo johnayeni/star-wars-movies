@@ -1,9 +1,9 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-alert */
+/* eslint-disable no-use-before-define */
 import { useEffect, useCallback } from 'react';
 import * as API from 'api';
 import useLocalStorage from 'useLocalStorage';
 import AppReducer from 'reducer';
+import { runFnAndHandleError, isArrayAndHasContent } from 'utils';
 import {
   APP_INITIAL_STATE,
   SET_CHARACTERS,
@@ -21,17 +21,19 @@ import {
   STRING,
 } from '../constants';
 
-const runFnAndHandleError = (fn, ...args) => {
-  try {
-    fn(...args);
-  } catch (error) {
-    window.alert(error.message);
-  }
-};
+export default function DataWrapper({ render }) {
+  const [state, onfilterChange, onSelectedMovieIndexChange, toggleKeyOrder] = useLocalState();
+  const contextData = {
+    ...state,
+    onfilterChange,
+    onSelectedMovieIndexChange,
+    toggleKeyOrder,
+  };
+  return render(contextData);
+}
 
-const DataWrapper = ({ render }) => {
+function useLocalState() {
   const [state, dispatch] = useLocalStorage(AppReducer, APP_INITIAL_STATE);
-
   const onfilterChange = (event) => {
     dispatch({ type: SET_FILTER, filter: event.target.value });
   };
@@ -67,7 +69,7 @@ const DataWrapper = ({ render }) => {
       const { selectedMovieIndex, characters, movies } = state;
       if (selectedMovieIndex !== null) {
         const movieId = movies[selectedMovieIndex].episode_id;
-        if (!characters[movieId] || characters[movieId].length < 1) {
+        if (!isArrayAndHasContent(characters[movieId])) {
           runFnAndHandleError(setCharacters, movieId, movies[selectedMovieIndex].characters);
         }
       }
@@ -94,13 +96,5 @@ const DataWrapper = ({ render }) => {
     [],
   );
 
-  const contextData = {
-    ...state,
-    onfilterChange,
-    onSelectedMovieIndexChange,
-    toggleKeyOrder,
-  };
-  return render(contextData);
-};
-
-export default DataWrapper;
+  return [state, onfilterChange, onSelectedMovieIndexChange, toggleKeyOrder];
+}

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from 'context';
 import {
   isArrayAndHasContent,
-  getTotalHeight,
+  getTotalHeightReducer,
   convertCentimetresToFeetPerInches,
   compareObjFn,
 } from 'utils';
@@ -35,7 +35,7 @@ const CharacterList = () => {
       sortOrder: sortOrder[key],
       type,
     }));
-  const charactersTotalHeight = filteredAndSortedCharacters.reduce(getTotalHeight, 0);
+  const charactersTotalHeight = filteredAndSortedCharacters.reduce(getTotalHeightReducer, 0);
   const heightInFeetPerInches = convertCentimetresToFeetPerInches(charactersTotalHeight);
   const noOfCharacters = filteredAndSortedCharacters.length;
 

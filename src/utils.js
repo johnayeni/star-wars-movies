@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import {
   ASCENDING_ORDER, NUMBER, DATE, STRING,
 } from './constants';
@@ -7,9 +8,9 @@ import {
  * It compares two values and returns a numerical
  * @param {Object} {}
  */
-export const compareObjFn = ({
+export function compareObjFn({
   currentObj, nextObj, key, sortOrder, type = STRING,
-}) => {
+}) {
   let comparison = 0;
   if (!(currentObj && nextObj && key && sortOrder && type)) {
     return comparison;
@@ -32,13 +33,15 @@ export const compareObjFn = ({
     comparison = -1;
   }
   return sortOrder === ASCENDING_ORDER ? comparison * -1 : comparison;
-};
+}
 
 /**
  * Checks if a paramenter is an array and if the length is graeter than 0
  * @param {*} arr
  */
-export const isArrayAndHasContent = arr => Array.isArray(arr) && arr.length > 0;
+export function isArrayAndHasContent(arr) {
+  return Array.isArray(arr) && arr.length > 0;
+}
 
 /**
  * This function is for a reducer function to sum the height value of an
@@ -46,26 +49,35 @@ export const isArrayAndHasContent = arr => Array.isArray(arr) && arr.length > 0;
  * @param {Number} total
  * @param {Object} character
  */
-export const getTotalHeight = (total, character) => {
+export function getTotalHeightReducer(total, character) {
   const height = character.height === 'unknown' ? 0 : Number(character.height);
   return total + height;
-};
+}
 
 /**
  * Converts a number in centimetre value to feet/inches
  * @param {Number} cm
  */
-export const convertCentimetresToFeetPerInches = (cm) => {
+export function convertCentimetresToFeetPerInches(cm) {
   if (typeof cm !== 'number') return null;
   const realFeet = (cm * 0.3937) / 12;
   const feet = Math.floor(realFeet);
   const inches = Math.round((realFeet - feet) * 12);
   return { feet, inches };
-};
+}
 /**
  * Returns an array of unique gender value form the
  * characters passed in as an array
  * @param {Array} characters
  */
-// eslint-disable-next-line max-len
-export const getUniqueGenders = (characters = []) => Array.from(new Set(characters.map(character => character.gender)));
+export function getUniqueGenders(characters = []) {
+  return Array.from(new Set(characters.map(character => character.gender)));
+}
+
+export function runFnAndHandleError(fn, ...args) {
+  try {
+    fn(...args);
+  } catch (error) {
+    globalThis.window.alert(error.message);
+  }
+}
