@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-alert */
-import React, { useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import * as API from 'api';
 import useLocalStorage from 'useLocalStorage';
 import AppReducer from 'reducer';
@@ -13,6 +13,9 @@ import {
   SET_SORT_ORDER,
   SET_SELECTED_MOVIE_INDEX,
   SET_SORT_BY,
+  RESET_FILTER,
+  RESET_LOADING,
+  RESET_STATE,
   ASCENDING_ORDER,
   DESCENDING_ORDER,
   STRING,
@@ -43,56 +46,51 @@ const DataWrapper = ({ render }) => {
   };
 
   const onSelectedMovieIndexChange = (event) => {
-    dispatch({ type: SET_FILTER, filter: 'all' });
+    dispatch({ type: RESET_FILTER });
     const { movies } = state;
     const movieIndex = movies.findIndex(movie => String(movie.episode_id) === event.target.value);
     dispatch({ type: SET_SELECTED_MOVIE_INDEX, value: movieIndex >= 0 ? movieIndex : null });
   };
 
-  useEffect(useCallback(() => {
-    const setCharacters = async (movieId, characterUrls) => {
-      dispatch({
-        type: SET_LOADING,
-        value: true,
-        text: 'The force is searching ...',
-      });
-      const characters = await API.fetchCharacters(characterUrls);
-      dispatch(
-        { type: SET_CHARACTERS, movieId, characters },
-        { type: SET_LOADING, value: false, text: null },
-      );
-    };
+  useEffect(
+    useCallback(() => {
+      const setCharacters = async (movieId, characterUrls) => {
+        dispatch({
+          type: SET_LOADING,
+          value: true,
+          text: 'The force is searching ...',
+        });
+        const characters = await API.fetchCharacters(characterUrls);
+        dispatch({ type: SET_CHARACTERS, movieId, characters }, { type: RESET_LOADING });
+      };
 
-    const { selectedMovieIndex, characters, movies } = state;
-    if (selectedMovieIndex !== null) {
-      const movieId = movies[selectedMovieIndex].episode_id;
-      if (!characters[movieId] || characters[movieId].length < 1) {
-        runFnAndHandleError(setCharacters, movieId, movies[selectedMovieIndex].characters);
+      const { selectedMovieIndex, characters, movies } = state;
+      if (selectedMovieIndex !== null) {
+        const movieId = movies[selectedMovieIndex].episode_id;
+        if (!characters[movieId] || characters[movieId].length < 1) {
+          runFnAndHandleError(setCharacters, movieId, movies[selectedMovieIndex].characters);
+        }
       }
-    }
-  }, [dispatch, state]), [state]);
+    }, [dispatch, state]),
+    [state],
+  );
 
   useEffect(
     useCallback(() => {
       const setMovies = async () => {
-        dispatch(
-          { type: SET_SELECTED_MOVIE_INDEX, value: null },
-          {
-            type: SET_LOADING,
-            value: true,
-            text: 'The force is searching ...',
-          },
-        );
+        dispatch({
+          type: SET_LOADING,
+          value: true,
+          text: 'Fetching movies ...',
+        });
         const data = await API.fetchMovies();
-        dispatch(
-          { type: SET_MOVIES, movies: data },
-          { type: SET_LOADING, value: false, text: null },
-        );
+        dispatch({ type: SET_MOVIES, movies: data }, { type: RESET_LOADING });
       };
 
-      dispatch({ type: SET_FILTER, filter: 'all' });
-      runFnAndHandleError(setMovies);
-    }, [dispatch]),
+      dispatch({ type: RESET_STATE });
+      const { movies } = state;
+      if (movies.length < 1) runFnAndHandleError(setMovies);
+    }, [dispatch, state]),
     [],
   );
 
@@ -102,7 +100,7 @@ const DataWrapper = ({ render }) => {
     onSelectedMovieIndexChange,
     toggleKeyOrder,
   };
-  return <React.Fragment>{render(contextData)}</React.Fragment>;
+  return render(contextData);
 };
 
 export default DataWrapper;

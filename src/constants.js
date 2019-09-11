@@ -30,3 +30,6 @@ export const SET_SELECTED_MOVIE_INDEX = 'SET_SELECTED_MOVIE_INDEX';
 export const SET_SORT_ORDER = 'SET_SORT_ORDER';
 export const SET_SORT_BY = 'SET_SORT_BY';
 export const SET_FILTER = 'SET_FILTER';
+export const RESET_FILTER = 'RESET_FILTER';
+export const RESET_LOADING = 'RESET_LOADING';
+export const RESET_STATE = 'RESET_STATE';
