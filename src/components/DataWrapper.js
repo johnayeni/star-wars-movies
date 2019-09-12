@@ -60,7 +60,7 @@ function useLocalState() {
         dispatch({
           type: SET_LOADING,
           value: true,
-          text: 'The force is searching ...',
+          text: 'The force is searching...',
         });
         const characters = await API.fetchCharacters(characterUrls);
         dispatch({ type: SET_CHARACTERS, movieId, characters }, { type: RESET_LOADING });
