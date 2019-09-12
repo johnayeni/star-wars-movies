@@ -3,11 +3,6 @@ import {
   ASCENDING_ORDER, NUMBER, DATE, STRING,
 } from './constants';
 
-/**
- * This function is a sort comparator for objects in an array.
- * It compares two values and returns a numerical
- * @param {Object} {}
- */
 export function compareObjFn({
   currentObj, nextObj, key, sortOrder, type = STRING,
 }) {
@@ -35,49 +30,33 @@ export function compareObjFn({
   return sortOrder === ASCENDING_ORDER ? comparison * -1 : comparison;
 }
 
-/**
- * Checks if a paramenter is an array and if the length is graeter than 0
- * @param {*} arr
- */
 export function isArrayAndHasContent(arr) {
   return Array.isArray(arr) && arr.length > 0;
 }
 
-/**
- * This function is for a reducer function to sum the height value of an
- * array of objects
- * @param {Number} total
- * @param {Object} character
- */
 export function getTotalHeightReducer(total, character) {
   const height = character.height === 'unknown' ? 0 : Number(character.height);
   return total + height;
 }
 
-/**
- * Converts a number in centimetre value to feet/inches
- * @param {Number} cm
- */
 export function convertCentimetresToFeetPerInches(cm) {
   if (typeof cm !== 'number') return null;
   const realFeet = (cm * 0.3937) / 12;
   const feet = Math.floor(realFeet);
   const inches = Math.round((realFeet - feet) * 12);
-  return { feet, inches };
+  return `${feet} ft, ${inches}inch`;
 }
-/**
- * Returns an array of unique gender value form the
- * characters passed in as an array
- * @param {Array} characters
- */
+
 export function getUniqueGenders(characters = []) {
   return Array.from(new Set(characters.map(character => character.gender)));
 }
 
-export function runFnAndHandleError(fn, ...args) {
-  try {
-    fn(...args);
-  } catch (error) {
-    globalThis.window.alert(error.message);
-  }
+export function returnSafeFn(fn, ...args) {
+  return function safeFn() {
+    try {
+      fn(...args);
+    } catch (error) {
+      globalThis.window.alert(error.message);
+    }
+  };
 }

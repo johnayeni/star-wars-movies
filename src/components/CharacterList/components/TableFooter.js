@@ -11,9 +11,7 @@ const TableFooter = ({ noOfCharacters, charactersTotalHeight, heightInFeetPerInc
     <tr>
       <td>Total height sum</td>
       <td colSpan={2} className="text--white">
-        {`${charactersTotalHeight} cm (${heightInFeetPerInches.feet} ft/${
-          heightInFeetPerInches.inches
-        } inches)`}
+        {`${charactersTotalHeight} cm (${heightInFeetPerInches})`}
       </td>
     </tr>
   </tfoot>

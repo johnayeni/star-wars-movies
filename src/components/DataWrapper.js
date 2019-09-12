@@ -3,7 +3,7 @@ import { useEffect, useCallback } from 'react';
 import * as API from 'api';
 import useSessionStorage from 'useSessionStorage';
 import AppReducer from 'reducer';
-import { runFnAndHandleError, isArrayAndHasContent } from 'utils';
+import { returnSafeFn, isArrayAndHasContent } from 'utils';
 import {
   APP_INITIAL_STATE,
   SET_CHARACTERS,
@@ -70,7 +70,12 @@ function useLocalState() {
       if (selectedMovieIndex !== null) {
         const movieId = movies[selectedMovieIndex].episode_id;
         if (!isArrayAndHasContent(characters[movieId])) {
-          runFnAndHandleError(setCharacters, movieId, movies[selectedMovieIndex].characters);
+          const safeSetCharacters = returnSafeFn(
+            setCharacters,
+            movieId,
+            movies[selectedMovieIndex].characters,
+          );
+          safeSetCharacters();
         }
       }
     }, [dispatch, state]),
@@ -91,7 +96,10 @@ function useLocalState() {
 
       dispatch({ type: RESET_STATE });
       const { movies } = state;
-      if (movies.length < 1) runFnAndHandleError(setMovies);
+      if (movies.length < 1) {
+        const safeSetMovies = returnSafeFn(setMovies);
+        safeSetMovies();
+      }
     }, [dispatch, state]),
     [],
   );
