@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import { useEffect, useCallback } from 'react';
 import * as API from 'api';
-import useLocalStorage from 'useLocalStorage';
+import useSessionStorage from 'useSessionStorage';
 import AppReducer from 'reducer';
 import { runFnAndHandleError, isArrayAndHasContent } from 'utils';
 import {
@@ -33,7 +33,7 @@ export default function DataWrapper({ render }) {
 }
 
 function useLocalState() {
-  const [state, dispatch] = useLocalStorage(AppReducer, APP_INITIAL_STATE);
+  const [state, dispatch] = useSessionStorage(AppReducer, APP_INITIAL_STATE);
   const onfilterChange = (event) => {
     dispatch({ type: SET_FILTER, filter: event.target.value });
   };

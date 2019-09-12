@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
 import { useReducer } from 'react';
 
-const useLocalStorage = (reducer, initialValue) => {
+const useSessionStorage = (reducer, initialValue) => {
   const getLocalState = () => {
     try {
-      const item = localStorage.getItem('state');
+      const item = sessionStorage.getItem('state');
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       return initialValue;
@@ -15,9 +15,9 @@ const useLocalStorage = (reducer, initialValue) => {
 
   const dispatch = (...actions) => {
     actions.forEach(action => setState(action));
-    localStorage.setItem('state', JSON.stringify(state));
+    sessionStorage.setItem('state', JSON.stringify(state));
   };
 
   return [state, dispatch];
 };
-export default useLocalStorage;
+export default useSessionStorage;
