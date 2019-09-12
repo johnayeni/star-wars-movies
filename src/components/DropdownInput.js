@@ -1,17 +1,10 @@
 import React, { useContext } from 'react';
 import AppContext from 'context';
-import { isArrayAndHasContent, compareObjFn } from 'utils';
-import { ASCENDING_ORDER, DATE } from '../constants';
+import { isArrayAndHasContent, sortMovies } from 'utils';
 
 const DropdownInput = () => {
   const { movies, loading, onSelectedMovieIndexChange } = useContext(AppContext);
-  const sortedMovies = [...movies].sort((currentMovie, nextMovie) => compareObjFn({
-    currentObj: currentMovie,
-    nextObj: nextMovie,
-    key: 'release_date',
-    sortOrder: ASCENDING_ORDER,
-    type: DATE,
-  }));
+  const sortedMovies = sortMovies(movies);
   return (
     <select
       className="select-input"

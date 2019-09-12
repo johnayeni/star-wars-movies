@@ -1,9 +1,10 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-use-before-define */
 import { useEffect, useCallback } from 'react';
 import * as API from 'api';
 import useSessionStorage from 'useSessionStorage';
 import AppReducer from 'reducer';
-import { returnSafeFn, isArrayAndHasContent } from 'utils';
+import { isArrayAndHasContent } from 'utils';
 import {
   APP_INITIAL_STATE,
   SET_CHARACTERS,
@@ -22,7 +23,9 @@ import {
 } from '../constants';
 
 export default function DataWrapper({ render }) {
-  const [state, onfilterChange, onSelectedMovieIndexChange, toggleKeyOrder] = useLocalState();
+  const {
+    state, onfilterChange, onSelectedMovieIndexChange, toggleKeyOrder,
+  } = useLocalState();
   const contextData = {
     ...state,
     onfilterChange,
@@ -62,24 +65,25 @@ function useLocalState() {
           value: true,
           text: 'The force is searching...',
         });
-        const characters = await API.fetchCharacters(characterUrls);
-        dispatch({ type: SET_CHARACTERS, movieId, characters }, { type: RESET_LOADING });
+        try {
+          const characters = await API.fetchCharacters(characterUrls);
+          dispatch({ type: SET_CHARACTERS, movieId, characters });
+        } catch (error) {
+          globalThis.window.alert(error.message);
+        } finally {
+          dispatch({ type: RESET_LOADING });
+        }
       };
 
       const { selectedMovieIndex, characters, movies } = state;
       if (selectedMovieIndex !== null) {
         const movieId = movies[selectedMovieIndex].episode_id;
         if (!isArrayAndHasContent(characters[movieId])) {
-          const safeSetCharacters = returnSafeFn(
-            setCharacters,
-            movieId,
-            movies[selectedMovieIndex].characters,
-          );
-          safeSetCharacters();
+          setCharacters(movieId, movies[selectedMovieIndex].characters);
         }
       }
     }, [dispatch, state]),
-    [state],
+    [state.selectedMovieIndex],
   );
 
   useEffect(
@@ -90,19 +94,24 @@ function useLocalState() {
           value: true,
           text: 'Fetching movies ...',
         });
-        const data = await API.fetchMovies();
-        dispatch({ type: SET_MOVIES, movies: data }, { type: RESET_LOADING });
+        try {
+          const data = await API.fetchMovies();
+          dispatch({ type: SET_MOVIES, movies: data });
+        } catch (error) {
+          globalThis.window.alert(error.message);
+        } finally {
+          dispatch({ type: RESET_LOADING });
+        }
       };
 
       dispatch({ type: RESET_STATE });
       const { movies } = state;
-      if (movies.length < 1) {
-        const safeSetMovies = returnSafeFn(setMovies);
-        safeSetMovies();
-      }
+      if (movies.length < 1) setMovies();
     }, [dispatch, state]),
     [],
   );
 
-  return [state, onfilterChange, onSelectedMovieIndexChange, toggleKeyOrder];
+  return {
+    state, onfilterChange, onSelectedMovieIndexChange, toggleKeyOrder,
+  };
 }

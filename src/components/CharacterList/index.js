@@ -1,11 +1,6 @@
 import React, { useContext } from 'react';
 import AppContext from 'context';
-import {
-  isArrayAndHasContent,
-  getTotalHeightReducer,
-  convertCentimetresToFeetPerInches,
-  compareObjFn,
-} from 'utils';
+import { isArrayAndHasContent, sortCharacters } from 'utils';
 import GenderFilter from 'components/GenderFilter';
 import TableHeader from './components/TableHeader';
 import TableBody from './components/TableBody';
@@ -26,19 +21,11 @@ const CharacterList = () => {
   const { key, type } = sortBy;
   const movieId = movies[selectedMovieIndex].episode_id;
   const movieCharacters = characters[movieId] || [];
-  const filteredAndSortedCharacters = movieCharacters
-    .filter(character => filter === 'all' || character.gender === filter)
-    .sort((currentCharacter, nextCharacter) => compareObjFn({
-      currentObj: currentCharacter,
-      nextObj: nextCharacter,
-      key,
-      sortOrder: sortOrder[key],
-      type,
-    }));
-  const charactersTotalHeight = filteredAndSortedCharacters.reduce(getTotalHeightReducer, 0);
-  const heightInFeetPerInches = convertCentimetresToFeetPerInches(charactersTotalHeight);
-  const noOfCharacters = filteredAndSortedCharacters.length;
-
+  const filteredCharacters = movieCharacters
+    .filter(character => filter === 'all' || character.gender === filter);
+  const filteredAndSortedCharacters = sortCharacters({
+    characters: filteredCharacters, key, type, order: sortOrder[key],
+  });
   return (
     <div id="characters">
       <p className="title">Characters</p>
@@ -49,9 +36,7 @@ const CharacterList = () => {
             <TableHeader toggleKeyOrder={toggleKeyOrder} sortOrder={sortOrder} />
             <TableBody characters={filteredAndSortedCharacters} />
             <TableFooter
-              noOfCharacters={noOfCharacters}
-              heightInFeetPerInches={heightInFeetPerInches}
-              charactersTotalHeight={charactersTotalHeight}
+              characters={filteredAndSortedCharacters}
             />
           </table>
         </React.Fragment>

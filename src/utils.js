@@ -1,42 +1,68 @@
-/* eslint-disable no-undef */
 import {
-  ASCENDING_ORDER, NUMBER, DATE, STRING,
+  DESCENDING_ORDER, NUMBER, DATE, STRING,
 } from './constants';
 
 export function compareObjFn({
-  currentObj, nextObj, key, sortOrder, type = STRING,
+  currentObj, nextObj, key, type,
 }) {
-  let comparison = 0;
-  if (!(currentObj && nextObj && key && sortOrder && type)) {
-    return comparison;
-  }
   let currentVal;
   let nextVal;
-  if (type === NUMBER) {
-    currentVal = Number(currentObj[key]) || 0;
-    nextVal = Number(nextObj[key]) || 0;
-  } else if (type === DATE) {
-    currentVal = new Date(currentObj[key]);
-    nextVal = new Date(nextObj[key]);
-  } else {
-    currentVal = currentObj[key].toLowerCase();
-    nextVal = nextObj[key].toLowerCase();
+  if (currentObj[key] && nextObj[key]) {
+    if (type === NUMBER) {
+      currentVal = Number(currentObj[key]) || 0;
+      nextVal = Number(nextObj[key]) || 0;
+    } else if (type === DATE) {
+      currentVal = new Date(currentObj[key]) || '';
+      nextVal = new Date(nextObj[key]) || '';
+    } else {
+      currentVal = currentObj[key].toLowerCase();
+      nextVal = nextObj[key].toLowerCase();
+    }
+    if (nextVal < currentVal) {
+      return 1;
+    } if (nextVal > currentVal) {
+      return -1;
+    }
   }
-  if (nextVal < currentVal) {
-    comparison = 1;
-  } else if (nextVal > currentVal) {
-    comparison = -1;
+  return 0;
+}
+
+export function sortArrOfObj({
+  arr, objectKey, sortOrder, keyType = STRING,
+}) {
+  const sortedArrInAsc = [...arr].sort((currentObj, nextObj) => compareObjFn({
+    currentObj, nextObj, key: objectKey, type: keyType,
+  }));
+  if (sortOrder === DESCENDING_ORDER) {
+    const sortedArrInDesc = [...sortedArrInAsc].reverse();
+    return sortedArrInDesc;
   }
-  return sortOrder === ASCENDING_ORDER ? comparison * -1 : comparison;
+  return sortedArrInAsc;
+}
+
+export function sortMovies(movies) {
+  return sortArrOfObj({
+    arr: movies, objectKey: 'release_date', sortOrder: DESCENDING_ORDER, keyType: DATE,
+  });
+}
+
+export function sortCharacters({
+  characters, key, type, order,
+}) {
+  return sortArrOfObj({
+    arr: characters, objectKey: key, sortOrder: order, keyType: type,
+  });
 }
 
 export function isArrayAndHasContent(arr) {
   return Array.isArray(arr) && arr.length > 0;
 }
 
-export function getTotalHeightReducer(total, character) {
-  const height = character.height === 'unknown' ? 0 : Number(character.height);
-  return total + height;
+export function getTotalHeightOfCharacters(characters) {
+  return characters.reduce((total, character) => {
+    const height = character.height === 'unknown' ? 0 : Number(character.height);
+    return total + height;
+  }, 0);
 }
 
 export function convertCentimetresToFeetPerInches(cm) {
@@ -49,14 +75,4 @@ export function convertCentimetresToFeetPerInches(cm) {
 
 export function getUniqueGenders(characters = []) {
   return Array.from(new Set(characters.map(character => character.gender)));
-}
-
-export function returnSafeFn(fn, ...args) {
-  return function safeFn() {
-    try {
-      fn(...args);
-    } catch (error) {
-      globalThis.window.alert(error.message);
-    }
-  };
 }
