@@ -2,7 +2,7 @@
 /* eslint-disable no-use-before-define */
 import { useEffect, useCallback } from 'react';
 import * as API from 'api';
-import useSessionStorage from 'useSessionStorage';
+import createPersistedReducer from 'use-persisted-reducer';
 import AppReducer from 'reducer';
 import { isArrayAndHasContent } from 'utils';
 import {
@@ -22,6 +22,8 @@ import {
   STRING,
 } from '../constants';
 
+const usePersistedReducer = createPersistedReducer('state', globalThis.sessionStorage);
+
 export default function DataWrapper({ render }) {
   const {
     state, onfilterChange, onSelectedMovieIndexChange, toggleKeyOrder,
@@ -36,7 +38,7 @@ export default function DataWrapper({ render }) {
 }
 
 function useLocalState() {
-  const [state, dispatch] = useSessionStorage(AppReducer, APP_INITIAL_STATE);
+  const [state, dispatch] = usePersistedReducer(AppReducer, APP_INITIAL_STATE);
   const onfilterChange = (event) => {
     dispatch({ type: SET_FILTER, filter: event.target.value });
   };
@@ -44,10 +46,8 @@ function useLocalState() {
   const toggleKeyOrder = (key, type = STRING) => {
     const { sortOrder } = state;
     const reverseOrder = sortOrder[key] === ASCENDING_ORDER ? DESCENDING_ORDER : ASCENDING_ORDER;
-    dispatch(
-      { type: SET_SORT_ORDER, key, value: reverseOrder },
-      { type: SET_SORT_BY, value: { key, type } },
-    );
+    dispatch({ type: SET_SORT_ORDER, key, value: reverseOrder });
+    dispatch({ type: SET_SORT_BY, value: { key, type } });
   };
 
   const onSelectedMovieIndexChange = (event) => {
@@ -112,6 +112,9 @@ function useLocalState() {
   );
 
   return {
-    state, onfilterChange, onSelectedMovieIndexChange, toggleKeyOrder,
+    state,
+    onfilterChange,
+    onSelectedMovieIndexChange,
+    toggleKeyOrder,
   };
 }
