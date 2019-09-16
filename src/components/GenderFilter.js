@@ -2,7 +2,8 @@ import React from 'react';
 import { isArrayAndHasContent, getUniqueGenders } from 'utils';
 
 function GenderFilter({ onfilterChange, filter, characters }) {
-  const filters = ['all', ...getUniqueGenders(characters)];
+  const uniqueGenders = getUniqueGenders(characters);
+  const filters = ['all', ...uniqueGenders];
   return (
     <div className="switch-field">
       {isArrayAndHasContent(filters) && (
