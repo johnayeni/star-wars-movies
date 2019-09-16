@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from 'context';
 import { isArrayAndHasContent, sortMovies } from 'utils';
 
-const DropdownInput = () => {
+function DropdownInput() {
   const { movies, loading, onSelectedMovieIndexChange } = useContext(AppContext);
   const sortedMovies = sortMovies(movies);
   return (
@@ -26,5 +26,5 @@ const DropdownInput = () => {
       )}
     </select>
   );
-};
+}
 export default DropdownInput;

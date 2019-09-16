@@ -1,7 +1,7 @@
 import React from 'react';
 import { isArrayAndHasContent, getUniqueGenders } from 'utils';
 
-const GenderFilter = ({ onfilterChange, filter, characters }) => {
+function GenderFilter({ onfilterChange, filter, characters }) {
   const filters = ['all', ...getUniqueGenders(characters)];
   return (
     <div className="switch-field">
@@ -26,5 +26,5 @@ const GenderFilter = ({ onfilterChange, filter, characters }) => {
       )}
     </div>
   );
-};
+}
 export default GenderFilter;

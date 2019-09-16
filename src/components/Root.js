@@ -6,8 +6,7 @@ import StarwarsLogo from 'components/StarwarsLogo';
 import Loader from 'components/Loader';
 import AppContext from 'context';
 
-
-const Root = () => {
+function Root() {
   const { loading, selectedMovieIndex, movies } = useContext(AppContext);
   return (
     <div className="container">
@@ -29,6 +28,6 @@ const Root = () => {
       )}
     </div>
   );
-};
+}
 
 export default Root;

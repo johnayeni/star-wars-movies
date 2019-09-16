@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import AppContext from 'context';
 
-const Loader = () => {
+function Loader() {
   const { loadingText } = useContext(AppContext);
   return (
     <React.Fragment>
@@ -9,6 +9,6 @@ const Loader = () => {
       <p>{loadingText || ''}</p>
     </React.Fragment>
   );
-};
+}
 
 export default Loader;

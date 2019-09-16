@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import AppContext from 'context';
 
-const OpeningCrawl = () => {
+function OpeningCrawl() {
   const { selectedMovieIndex, movies } = useContext(AppContext);
   const { opening_crawl } = movies[selectedMovieIndex];
   return (
@@ -10,6 +10,6 @@ const OpeningCrawl = () => {
       <p>{opening_crawl}</p>
     </div>
   );
-};
+}
 
 export default OpeningCrawl;

@@ -6,7 +6,7 @@ import TableHeader from './components/TableHeader';
 import TableBody from './components/TableBody';
 import TableFooter from './components/TableFooter';
 
-const CharacterList = () => {
+function CharacterList() {
   const {
     movies,
     characters,
@@ -21,10 +21,14 @@ const CharacterList = () => {
   const { key, type } = sortBy;
   const movieId = movies[selectedMovieIndex].episode_id;
   const movieCharacters = characters[movieId] || [];
-  const filteredCharacters = movieCharacters
-    .filter(character => filter === 'all' || character.gender === filter);
+  const filteredCharacters = movieCharacters.filter(
+    character => filter === 'all' || character.gender === filter,
+  );
   const filteredAndSortedCharacters = sortCharacters({
-    characters: filteredCharacters, key, type, order: sortOrder[key],
+    characters: filteredCharacters,
+    key,
+    type,
+    order: sortOrder[key],
   });
   return (
     <div id="characters">
@@ -35,9 +39,7 @@ const CharacterList = () => {
           <table className="character-list-table">
             <TableHeader toggleKeyOrder={toggleKeyOrder} sortOrder={sortOrder} />
             <TableBody characters={filteredAndSortedCharacters} />
-            <TableFooter
-              characters={filteredAndSortedCharacters}
-            />
+            <TableFooter characters={filteredAndSortedCharacters} />
           </table>
         </React.Fragment>
       ) : (
@@ -45,6 +47,6 @@ const CharacterList = () => {
       )}
     </div>
   );
-};
+}
 
 export default CharacterList;

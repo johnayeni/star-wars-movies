@@ -1,7 +1,7 @@
 import React from 'react';
 import { getTotalHeightOfCharacters, convertCentimetresToFeetPerInches } from 'utils';
 
-const TableFooter = ({ characters }) => {
+function TableFooter({ characters }) {
   const charactersTotalHeight = getTotalHeightOfCharacters(characters);
   const heightInFeetPerInches = convertCentimetresToFeetPerInches(charactersTotalHeight);
   const noOfCharacters = characters.length;
@@ -21,6 +21,6 @@ const TableFooter = ({ characters }) => {
       </tr>
     </tfoot>
   );
-};
+}
 
 export default TableFooter;
